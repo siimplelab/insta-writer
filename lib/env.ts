@@ -10,6 +10,7 @@ const schema = z.object({
   BLOB_READ_WRITE_TOKEN: z.string().min(1).optional(),
   AI_GATEWAY_API_KEY: z.string().min(1).optional(),
   CRON_SECRET: z.string().min(1),
+  APP_API_KEY: z.string().min(16).optional(),
   NEXT_PUBLIC_APP_URL: z.string().url(),
 });
 
@@ -23,5 +24,6 @@ export const env = schema.parse({
   BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
   AI_GATEWAY_API_KEY: process.env.AI_GATEWAY_API_KEY,
   CRON_SECRET: process.env.CRON_SECRET,
+  APP_API_KEY: process.env.APP_API_KEY,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
 });

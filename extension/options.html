@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>IG Writer — Options</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 560px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #111;
+      }
+      h1 { font-size: 20px; }
+      label { display: block; margin: 16px 0 4px; font-weight: 600; font-size: 14px; }
+      input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font: inherit; }
+      button { margin-top: 20px; padding: 10px 20px; background: #111; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+      .hint { color: #666; font-size: 12px; margin-top: 4px; }
+      .status { margin-top: 16px; padding: 10px; border-radius: 4px; display: none; }
+      .status.ok { display: block; background: #ecfdf5; color: #065f46; }
+      .status.err { display: block; background: #fef2f2; color: #991b1b; }
+      code { background: #f3f4f6; padding: 2px 4px; border-radius: 3px; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>IG Writer — Extension Options</h1>
+
+    <label for="appUrl">App URL</label>
+    <input id="appUrl" type="url" placeholder="https://insta-writer.vercel.app" />
+    <p class="hint">No trailing slash. Example: <code>https://insta-writer.vercel.app</code></p>
+
+    <label for="apiKey">API Key</label>
+    <input id="apiKey" type="password" placeholder="paste your APP_API_KEY here" />
+    <p class="hint">
+      Generate one with <code>openssl rand -hex 32</code> and set as
+      <code>APP_API_KEY</code> in your Vercel project's Environment Variables (then redeploy).
+      Paste the same value here.
+    </p>
+
+    <label for="locale">Default language</label>
+    <select id="locale">
+      <option value="en">English</option>
+      <option value="ko">한국어 (Korean)</option>
+    </select>
+    <p class="hint">Used for AI-generated captions.</p>
+
+    <button id="save">Save</button>
+    <button id="test" style="background:#fff;color:#111;border:1px solid #ddd;margin-left:8px;">Test connection</button>
+
+    <div id="status" class="status"></div>
+
+    <script src="options.js"></script>
+  </body>
+</html>

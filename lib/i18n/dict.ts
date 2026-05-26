@@ -95,6 +95,13 @@ export const dict = {
       korean: "한국어 (Korean)",
       save: "Save",
       saved: "Saved — refresh to see changes.",
+      extensionTitle: "Chrome extension",
+      extensionDesc:
+        "Install the companion Chrome extension to capture page content into IG draft posts. It authenticates against this app using an API key.",
+      apiKeyConfigured: "API key is configured.",
+      apiKeyMissing:
+        "APP_API_KEY env var is NOT set. Generate with `openssl rand -hex 32` and add it in Vercel → Settings → Environment Variables (redeploy after).",
+      extensionInstall: "Install the extension",
     },
     dbError:
       "Could not reach the database. Run `vercel env pull .env.local` and `npm run db:push` to set it up.",
@@ -191,6 +198,13 @@ export const dict = {
       korean: "한국어",
       save: "저장",
       saved: "저장되었습니다 — 새로고침하면 적용됩니다.",
+      extensionTitle: "크롬 확장 프로그램",
+      extensionDesc:
+        "동반 크롬 확장 프로그램을 설치하면 웹페이지에서 콘텐츠를 가져와 인스타그램 초안으로 저장할 수 있습니다. API 키로 인증합니다.",
+      apiKeyConfigured: "API 키가 설정되어 있습니다.",
+      apiKeyMissing:
+        "APP_API_KEY 환경 변수가 설정되어 있지 않습니다. `openssl rand -hex 32`로 생성한 뒤 Vercel → Settings → Environment Variables에 추가하고 재배포하세요.",
+      extensionInstall: "확장 프로그램 설치 방법",
     },
     dbError:
       "데이터베이스에 연결할 수 없습니다. `vercel env pull .env.local` 후 `npm run db:push`를 실행하세요.",

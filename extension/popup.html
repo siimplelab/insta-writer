@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>IG Writer</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>IG Writer</h1>
+      <a href="#" id="open-options" title="Options">⚙</a>
+    </header>
+
+    <div id="not-configured" class="hidden notice warn">
+      <p>Set your App URL and API key in Options first.</p>
+      <button id="open-options-2">Open Options</button>
+    </div>
+
+    <main id="main" class="hidden">
+      <section class="row">
+        <label>Account</label>
+        <select id="account"></select>
+      </section>
+
+      <section class="row">
+        <label>Kind</label>
+        <select id="kind">
+          <option value="photo">Photo</option>
+          <option value="carousel">Carousel</option>
+          <option value="reel">Reel</option>
+          <option value="story">Story</option>
+        </select>
+      </section>
+
+      <section class="row">
+        <label>Source URL</label>
+        <input id="page-url" type="text" readonly />
+      </section>
+
+      <section class="row">
+        <label>Pick image from page</label>
+        <div id="images" class="image-grid"></div>
+        <p class="hint">Click an image to toggle selection. Selected images are saved with the draft.</p>
+      </section>
+
+      <section class="row">
+        <label>
+          Caption
+          <button id="ai-caption" type="button">AI ✨</button>
+        </label>
+        <textarea id="caption" rows="6" placeholder="Caption (or click AI to generate)…"></textarea>
+      </section>
+
+      <section class="row">
+        <label>Scheduled for (local)</label>
+        <input id="when" type="datetime-local" />
+      </section>
+
+      <section class="row">
+        <label>
+          <input id="as-draft" type="checkbox" checked />
+          Save as draft (don't queue yet)
+        </label>
+      </section>
+
+      <div id="status" class="status"></div>
+
+      <button id="save" class="primary">Save to IG Writer</button>
+    </main>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>
