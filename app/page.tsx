@@ -1,65 +1,109 @@
-import Image from "next/image";
+import Link from "next/link";
+import { db, schema } from "@/lib/db/client";
+import { desc } from "drizzle-orm";
+import { safeQuery } from "@/lib/db/safe";
+import { getDict } from "@/lib/i18n/server";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const t = await getDict();
+  const accountsRes = await safeQuery(
+    () => db.select().from(schema.igAccounts),
+    [] as (typeof schema.igAccounts.$inferSelect)[],
+  );
+  const postsRes = await safeQuery(
+    () =>
+      db
+        .select()
+        .from(schema.posts)
+        .orderBy(desc(schema.posts.scheduledFor))
+        .limit(10),
+    [] as (typeof schema.posts.$inferSelect)[],
+  );
+  const dbError = accountsRes.error ?? postsRes.error;
+  const accounts = accountsRes.data;
+  const upcoming = postsRes.data;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="mx-auto max-w-4xl p-8 space-y-8">
+      <header className="space-y-2">
+        <h1 className="text-3xl font-bold">{t.appTitle}</h1>
+        <p className="text-sm text-neutral-500">{t.tagline}</p>
+      </header>
+
+      {dbError && (
+        <div className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
+          {t.dbError}
+          <pre className="mt-2 text-xs opacity-70">{dbError}</pre>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      )}
+
+      <section className="space-y-2">
+        <h2 className="font-semibold">{t.connectedAccounts}</h2>
+        {accounts.length === 0 ? (
+          <Link
+            href="/api/meta/oauth/start"
+            className="inline-block rounded bg-black px-4 py-2 text-white"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {t.connectButton}
+          </Link>
+        ) : (
+          <ul className="text-sm">
+            {accounts.map((a) => (
+              <li key={a.id}>
+                @{a.handle} — {t.tokenExpires} {a.tokenExpiresAt.toISOString().slice(0, 10)}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <nav className="grid grid-cols-2 gap-3 md:grid-cols-3">
+        {[
+          [t.nav.compose, "/compose"],
+          [t.nav.calendar, "/calendar"],
+          [t.nav.inbox, "/inbox"],
+          [t.nav.rules, "/rules"],
+          [t.nav.leads, "/leads"],
+          [t.nav.analytics, "/analytics"],
+          [t.nav.settings, "/settings"],
+        ].map(([label, href]) => (
+          <Link
+            key={href}
+            href={href}
+            className="rounded border border-neutral-200 p-4 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            {label}
+          </Link>
+        ))}
+      </nav>
+
+      <section className="space-y-2">
+        <h2 className="font-semibold">{t.recentPosts}</h2>
+        {upcoming.length === 0 ? (
+          <p className="text-sm text-neutral-500">{t.noPosts}</p>
+        ) : (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-neutral-500">
+                <th>{t.cols.when}</th>
+                <th>{t.cols.kind}</th>
+                <th>{t.cols.status}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {upcoming.map((p) => (
+                <tr key={p.id} className="border-t border-neutral-200 dark:border-neutral-800">
+                  <td>{p.scheduledFor.toISOString().slice(0, 16).replace("T", " ")}</td>
+                  <td>{p.kind}</td>
+                  <td>{p.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+    </main>
   );
 }
