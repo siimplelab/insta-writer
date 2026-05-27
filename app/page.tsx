@@ -42,12 +42,23 @@ export default async function Home() {
       <section className="space-y-2">
         <h2 className="font-semibold">{t.connectedAccounts}</h2>
         {accounts.length === 0 ? (
-          <Link
-            href="/api/meta/oauth/start"
-            className="inline-block rounded bg-black px-4 py-2 text-white"
-          >
-            {t.connectButton}
-          </Link>
+          <div className="space-y-3">
+            <Link
+              href="/api/meta/oauth/start"
+              className="inline-block rounded bg-black px-4 py-2 text-white"
+            >
+              {t.connectButton}
+            </Link>
+            <div className="rounded border border-blue-200 bg-blue-50 p-3 text-sm dark:border-blue-900 dark:bg-blue-950">
+              <p className="text-blue-900 dark:text-blue-200">{t.onboardingHint}</p>
+              <Link
+                href="/guides/switch-to-creator"
+                className="mt-1 inline-block font-medium text-blue-700 hover:underline dark:text-blue-300"
+              >
+                {t.onboardingCta}
+              </Link>
+            </div>
+          </div>
         ) : (
           <ul className="text-sm">
             {accounts.map((a) => (
@@ -68,6 +79,7 @@ export default async function Home() {
           [t.nav.leads, "/leads"],
           [t.nav.analytics, "/analytics"],
           ["Twitter / X →", "/twitter"],
+          [t.guidesNav, "/guides"],
           [t.nav.settings, "/settings"],
         ].map(([label, href]) => (
           <Link

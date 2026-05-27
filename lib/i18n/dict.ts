@@ -8,7 +8,12 @@ export const dict = {
     tagline:
       "Schedule posts and run DM lead-gen on your own Instagram Business accounts — all via Meta's official APIs.",
     connectedAccounts: "Connected accounts",
-    connectButton: "Connect Instagram Business",
+    connectButton: "Connect Instagram",
+    onboardingHint:
+      "Have a regular Instagram account? You'll need to switch to a Creator profile first — it takes 30 seconds, is invisible to your followers, and is reversible.",
+    onboardingCta: "Read the 30-second guide →",
+    guidesNav: "Guides",
+    guidesTagline: "Marketing playbook",
     tokenExpires: "token expires",
     nav: {
       compose: "Compose",
@@ -111,7 +116,12 @@ export const dict = {
     tagline:
       "내 인스타그램 비즈니스 계정에 게시물을 예약하고 DM 리드 자동화를 운영하세요 — 모두 Meta 공식 API를 사용합니다.",
     connectedAccounts: "연결된 계정",
-    connectButton: "Instagram 비즈니스 연결",
+    connectButton: "Instagram 연결",
+    onboardingHint:
+      "일반 인스타그램 계정을 쓰고 계신가요? 먼저 크리에이터 프로필로 전환해야 합니다 — 30초면 끝나고, 팔로워에게는 보이지 않으며, 언제든 되돌릴 수 있습니다.",
+    onboardingCta: "30초 가이드 읽기 →",
+    guidesNav: "가이드",
+    guidesTagline: "마케팅 플레이북",
     tokenExpires: "토큰 만료일",
     nav: {
       compose: "작성",
