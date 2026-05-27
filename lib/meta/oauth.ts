@@ -6,15 +6,15 @@ export function authorizeUrl(state: string) {
     redirect_uri: process.env.META_REDIRECT_URI!,
     state,
     response_type: "code",
+    // Minimal scope: publish to your own IG + read insights. No messaging,
+    // no comment management, no webhook subscription. Smaller scope = faster
+    // App Review later if you ever go that route.
     scope: [
       "instagram_basic",
       "instagram_content_publish",
-      "instagram_manage_comments",
-      "instagram_manage_messages",
       "instagram_manage_insights",
       "pages_show_list",
       "pages_read_engagement",
-      "pages_manage_metadata",
     ].join(","),
   });
   return `https://www.facebook.com/${process.env.META_GRAPH_VERSION ?? "v21.0"}/dialog/oauth?${params}`;

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { and, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
 import { z } from "zod";
 
@@ -50,4 +51,23 @@ export async function createScheduledPost(input: z.input<typeof createSchema>) {
   revalidatePath("/");
   revalidatePath("/calendar");
   return { id: post.id };
+}
+
+/**
+ * Delete a scheduled or draft post. Posts that have already been published
+ * to Instagram are not deletable from here (Meta keeps them — you'd delete
+ * from the IG app).
+ */
+export async function deletePost(id: string) {
+  await db
+    .delete(schema.posts)
+    .where(
+      and(
+        eq(schema.posts.id, id),
+        // Only delete things that haven't been posted yet
+        inArray(schema.posts.status, ["draft", "queued", "failed"]),
+      ),
+    );
+  revalidatePath("/");
+  revalidatePath("/calendar");
 }

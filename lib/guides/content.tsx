@@ -333,97 +333,56 @@ export const GUIDES: Guide[] = [
 
   {
     slug: "dm-funnels",
-    title: "DM funnels without being a creep",
+    title: "On DM funnels: this app doesn't do them (and why)",
     blurb:
-      "Keyword auto-replies are a legit lead-gen tool. Here's how to set them up so they help your audience instead of annoying them.",
-    readingMinutes: 4,
+      "If you want keyword-triggered DM auto-replies (\"comment LINK and I'll DM you\"), you need a different tool. Here's the honest landscape.",
+    readingMinutes: 2,
     body: () => (
       <>
         <P>
-          The &quot;comment LINK and I&apos;ll DM you the free guide&quot;
-          play has gotten old, but it still works — when you treat the DM as
-          an actual conversation, not a spam blast. This app has a DM rules
-          engine; here&apos;s the right way to use it.
+          DM auto-replies on Instagram require <Em>three things this app deliberately
+          doesn&apos;t do</Em>: a publicly-reachable webhook endpoint, an always-on
+          server, and a Meta App Review to enable <Code>instagram_manage_messages</Code>.
+          We considered building it and cut it — the &quot;run on my laptop&quot;
+          deployment story doesn&apos;t work for live event handling.
         </P>
 
-        <H2>What you&apos;re actually allowed to do</H2>
-        <P>
-          Instagram&apos;s API only lets you send a DM within a{" "}
-          <Em>24-hour window</Em> after the user sends you something. So:
-        </P>
+        <H2>If you want this feature</H2>
         <UL>
           <li>
-            <Em>Allowed</Em>: someone DMs you the word &quot;LINK&quot; — you
-            auto-reply with the link, immediately. Inside the window.
+            <Em>ManyChat</Em> (free tier exists) — best-in-class. Their entire
+            product is keyword-triggered IG/FB/WhatsApp flows.
           </li>
           <li>
-            <Em>Allowed</Em>: someone comments &quot;LINK&quot; on your Reel —
-            you can still auto-DM them, because comments on your post count
-            as user-initiated contact.
+            <Em>Customers.ai</Em> (formerly MobileMonkey) — similar.
           </li>
           <li>
-            <Em>Not allowed</Em>: cold-DMing followers who haven&apos;t
-            interacted with you. The API rejects it outside the 24h window.
-            This is enforced server-side — not a policy you can break.
+            <Em>Manual quick replies</Em> in the Instagram app — &quot;Settings →
+            Business tools → Saved replies&quot;. Free, no automation, but
+            instant template insertion when you reply manually.
           </li>
         </UL>
 
-        <H2>A working funnel</H2>
-        <OL>
-          <li>
-            Post a Reel with a hook like: &quot;I made a free template for
-            this. DM me the word <Code>TEMPLATE</Code> and I&apos;ll send it
-            over.&quot; (Or use a comment trigger.)
-          </li>
-          <li>
-            In <a className="underline" href="/rules">Rules</a>, create a rule:
-            keyword <Code>TEMPLATE</Code> (match: contains), reply with the
-            link + a short personalization (&quot;Here you go, @
-            {"{{username}}"} — let me know what you build!&quot;), tag the
-            sender as a lead.
-          </li>
-          <li>
-            They get the link instantly. The lead is captured in{" "}
-            <a className="underline" href="/leads">Leads</a>. Export the CSV
-            weekly to your CRM or email tool.
-          </li>
-          <li>
-            Within 24h, you can send <Em>one</Em> follow-up if relevant —
-            e.g. &quot;BTW I run a paid version, want details?&quot;. After
-            24h, you need a new user message before you can reply again.
-          </li>
-        </OL>
-
-        <H2>The line between funnel and spam</H2>
-        <Quote>
-          A good funnel gives more value than it asks for. A spammy funnel
-          asks for the sale in the first message.
-        </Quote>
-        <UL>
-          <li>
-            Deliver the promised thing <Em>first</Em>. Pitch later (or never).
-          </li>
-          <li>
-            Don&apos;t auto-DM the same person twice on the same keyword. Set
-            up your rule to skip if a lead row already exists.
-          </li>
-          <li>
-            If your DM reply is &gt; 3 paragraphs, you&apos;re overdoing it.
-            People glance at DMs on a phone screen.
-          </li>
-        </UL>
-
-        <H2>Twitter equivalent</H2>
+        <H2>The 24-hour rule</H2>
         <P>
-          On X, the analog is &quot;reply REPLY and I&apos;ll DM you.&quot;
-          Twitter&apos;s DM API is more restrictive than Instagram&apos;s and
-          most accounts can&apos;t enable inbound automation without higher
-          API tiers. For now, the manual workflow is fine.
+          Whatever tool you use: Instagram only lets you send a DM within{" "}
+          <Em>24 hours</Em> after the user&apos;s last message to you. Cold
+          outbound DM blasts to followers aren&apos;t API-allowed, regardless
+          of which tool you pick. If a vendor promises this, they&apos;re
+          using browser automation and your account will get banned.
+        </P>
+
+        <H2>What this app gives you instead</H2>
+        <P>
+          The bio-link or first-comment play is still very effective and doesn&apos;t
+          need any of this infrastructure: post a Reel with &quot;link in bio&quot;,
+          rotate your bio link via a Linktree-like page, capture leads on
+          your own landing page. Schedule the Reel with this app, write the
+          caption with AI, done.
         </P>
       </>
     ),
   },
-
   {
     slug: "cadence-and-timing",
     title: "Posting cadence and timing: stop optimizing the wrong thing",

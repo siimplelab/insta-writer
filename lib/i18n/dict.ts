@@ -6,7 +6,7 @@ export const dict = {
   en: {
     appTitle: "Instagram Writer",
     tagline:
-      "Schedule posts and run DM lead-gen on your own Instagram Business accounts — all via Meta's official APIs.",
+      "An AI-assisted multi-platform scheduler with a browser-extension capture flow. Posts to your own Instagram and Twitter/X accounts via official APIs.",
     connectedAccounts: "Connected accounts",
     connectButton: "Connect Instagram",
     onboardingHint:
@@ -18,9 +18,6 @@ export const dict = {
     nav: {
       compose: "Compose",
       calendar: "Calendar",
-      inbox: "Inbox",
-      rules: "Rules",
-      leads: "Leads",
       analytics: "Analytics",
       settings: "Settings",
     },
@@ -36,9 +33,6 @@ export const dict = {
       impressions: "Impressions",
       profileViews: "Profile views",
       followers: "Followers",
-      igUser: "IG user",
-      firstSeen: "First seen",
-      lastMsg: "Last message",
     },
     compose: {
       title: "Compose",
@@ -63,35 +57,13 @@ export const dict = {
     calendar: {
       title: "Calendar",
       empty: "Nothing scheduled.",
-    },
-    inbox: {
-      title: "Inbox",
-      hint: "Recent DMs and webhook events.",
-      noText: "[no text]",
-    },
-    rules: {
-      title: "DM rules",
-      hint: "Keyword-triggered auto-replies to DMs on your own accounts. Replies only fire inside Instagram's 24-hour messaging window.",
-      newRule: "New rule",
-      ruleName: "Rule name",
-      keywords: "Keywords (comma separated)",
-      replyTemplate: "Reply template — use {{username}}",
-      captureLead: "Capture sender as lead",
-      save: "Save rule",
-      saved: "Saved",
-      existing: "Existing",
-      noRules: "No rules yet.",
-      connectFirst: "Connect an account first.",
-      delete: "delete",
-    },
-    leads: {
-      title: "Leads",
-      empty: "No leads captured yet.",
-      exportCsv: "Export CSV",
+      delete: "Delete",
+      deleted: "Deleted",
+      confirmDelete: "Delete this scheduled item?",
     },
     analytics: {
       title: "Analytics",
-      empty: "No insights yet — the hourly cron will start populating after connect.",
+      empty: "No insights yet — run the insights cron after you connect.",
     },
     settings: {
       title: "Settings",
@@ -102,19 +74,18 @@ export const dict = {
       saved: "Saved — refresh to see changes.",
       extensionTitle: "Chrome extension",
       extensionDesc:
-        "Install the companion Chrome extension to capture page content into IG draft posts. It authenticates against this app using an API key.",
+        "Install the companion Chrome extension to capture page content into draft posts. It authenticates against this app using an API key.",
       apiKeyConfigured: "API key is configured.",
       apiKeyMissing:
-        "APP_API_KEY env var is NOT set. Generate with `openssl rand -hex 32` and add it in Vercel → Settings → Environment Variables (redeploy after).",
+        "APP_API_KEY env var is NOT set. Generate with `openssl rand -hex 32` and add it to your .env.local.",
       extensionInstall: "Install the extension",
     },
-    dbError:
-      "Could not reach the database. Run `vercel env pull .env.local` and `npm run db:push` to set it up.",
+    dbError: "Could not reach the database. Restart the dev server to auto-create it.",
   },
   ko: {
     appTitle: "인스타그램 라이터",
     tagline:
-      "내 인스타그램 비즈니스 계정에 게시물을 예약하고 DM 리드 자동화를 운영하세요 — 모두 Meta 공식 API를 사용합니다.",
+      "AI 기반 멀티 플랫폼 게시 예약 도구입니다. 브라우저 확장으로 웹페이지에서 콘텐츠를 캡처해 자신의 인스타그램과 X(트위터) 계정에 공식 API로 게시합니다.",
     connectedAccounts: "연결된 계정",
     connectButton: "Instagram 연결",
     onboardingHint:
@@ -126,9 +97,6 @@ export const dict = {
     nav: {
       compose: "작성",
       calendar: "캘린더",
-      inbox: "수신함",
-      rules: "규칙",
-      leads: "리드",
       analytics: "분석",
       settings: "설정",
     },
@@ -144,9 +112,6 @@ export const dict = {
       impressions: "노출",
       profileViews: "프로필 방문",
       followers: "팔로워",
-      igUser: "IG 사용자",
-      firstSeen: "최초 발견",
-      lastMsg: "마지막 메시지",
     },
     compose: {
       title: "게시물 작성",
@@ -171,35 +136,13 @@ export const dict = {
     calendar: {
       title: "캘린더",
       empty: "예약된 게시물이 없습니다.",
-    },
-    inbox: {
-      title: "수신함",
-      hint: "최근 DM 및 웹훅 이벤트입니다.",
-      noText: "[내용 없음]",
-    },
-    rules: {
-      title: "DM 규칙",
-      hint: "내 계정에 도착한 DM에 대해 키워드로 자동 응답합니다. 응답은 Instagram의 24시간 메시지 창 안에서만 발송됩니다.",
-      newRule: "새 규칙",
-      ruleName: "규칙 이름",
-      keywords: "키워드 (쉼표로 구분)",
-      replyTemplate: "응답 템플릿 — {{username}} 사용 가능",
-      captureLead: "발신자를 리드로 저장",
-      save: "규칙 저장",
-      saved: "저장됨",
-      existing: "기존 규칙",
-      noRules: "아직 규칙이 없습니다.",
-      connectFirst: "먼저 계정을 연결하세요.",
       delete: "삭제",
-    },
-    leads: {
-      title: "리드",
-      empty: "아직 수집된 리드가 없습니다.",
-      exportCsv: "CSV로 내보내기",
+      deleted: "삭제되었습니다",
+      confirmDelete: "이 예약 항목을 삭제할까요?",
     },
     analytics: {
       title: "분석",
-      empty: "아직 인사이트가 없습니다 — 연결 후 매시간 크론이 데이터를 채웁니다.",
+      empty: "아직 인사이트가 없습니다 — 연결 후 인사이트 크론을 실행하세요.",
     },
     settings: {
       title: "설정",
@@ -213,11 +156,10 @@ export const dict = {
         "동반 크롬 확장 프로그램을 설치하면 웹페이지에서 콘텐츠를 가져와 인스타그램 초안으로 저장할 수 있습니다. API 키로 인증합니다.",
       apiKeyConfigured: "API 키가 설정되어 있습니다.",
       apiKeyMissing:
-        "APP_API_KEY 환경 변수가 설정되어 있지 않습니다. `openssl rand -hex 32`로 생성한 뒤 Vercel → Settings → Environment Variables에 추가하고 재배포하세요.",
+        "APP_API_KEY 환경 변수가 설정되어 있지 않습니다. `openssl rand -hex 32`로 생성한 뒤 .env.local에 추가하세요.",
       extensionInstall: "확장 프로그램 설치 방법",
     },
-    dbError:
-      "데이터베이스에 연결할 수 없습니다. `vercel env pull .env.local` 후 `npm run db:push`를 실행하세요.",
+    dbError: "데이터베이스에 접근할 수 없습니다. 개발 서버를 재시작하면 자동으로 생성됩니다.",
   },
 };
 

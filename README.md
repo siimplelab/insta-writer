@@ -1,128 +1,121 @@
 # Instagram Writer
 
-Personal marketing automation for your own Instagram Business/Creator accounts,
-built on Meta's **official** APIs only — no browser automation, no
-auto-follow/unfollow, no mass-comment-on-other-people's-posts (all of which
-violate Instagram's ToS and get accounts banned).
+**AI-assisted multi-platform scheduler with a browser-extension capture flow.**
+Posts to your own Instagram (Creator / Business) and Twitter/X accounts via
+official APIs. Local-first — your data and credentials live on your machine.
 
-## What it does
+## What it does — and what it doesn't
 
-- **Schedule** photo, carousel, reel, and story posts
-- **First comment** auto-posted right after publish (for hashtags)
-- **AI caption** suggestions from your image (Vercel AI Gateway)
-- **DM lead-gen**: keyword-triggered auto-replies to incoming DMs on your own
-  accounts, captured into a leads table with CSV export
-- **Analytics**: pull from the Insights API
-- **Chrome extension** (`extension/`): one-click capture from any webpage into
-  draft posts
-- **i18n**: English + Korean
+This is intentionally a **publish-only** tool. It does **not** receive webhooks,
+auto-DM, or auto-comment. That scope cut keeps the deployment story honest:
+your laptop can be offline most of the day and the app will catch up when you
+turn it on.
 
-## Architecture
+### ✅ What you get
 
-**Local-first.** Storage is **SQLite** in a local file (`data/app.db` by
-default). There is no external database. The Vercel Function filesystem is
-ephemeral so a Vercel deploy of this app won't persist data — **run it on
-your own machine** with `npm run dev`.
+- **Schedule** photo, carousel, reel, and story posts to IG
+- **Schedule** tweets with images to X
+- **AI caption** generation from an image (Vercel AI Gateway)
+- **Browser extension** to capture page content into draft posts on any site
+- **Calendar** view with status badges, delete for queued/draft/failed items
+- **Catch-up + stale protection** — when your cron runs after being offline,
+  it publishes anything queued within the last 24h and marks older items
+  failed (so a Tuesday sale post doesn't go out on Thursday)
+- **Marketing guides** built-in covering content strategy, hashtags, Reels,
+  cadence, X, analytics
+- **English + Korean** UI
 
-Stack: Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Vercel Blob
-(optional, for media) · Vercel AI Gateway · Tailwind.
+### ❌ What you don't get (and why)
+
+- **DM auto-replies / lead capture** — would require an always-on, publicly
+  reachable webhook server. See `/guides/dm-funnels` for the honest landscape
+  (ManyChat is the right tool).
+- **Personal IG account support** — Meta's official API is hard-gated to
+  Creator/Business accounts. Switch (free, invisible, reversible) — see
+  `/guides/switch-to-creator`.
+- **Comment automation / follower automation** — these violate Instagram's
+  Terms of Use. We don't build them.
+- **Twitter DM features** — Twitter's webhook tier (Account Activity API) is
+  enterprise-priced.
+- **Video tweets** — image-only for the MVP.
+
+## Stack
+
+Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Vercel Blob · Vercel
+AI Gateway · Tailwind.
+
+Storage is local SQLite at `data/app.db`. The database and schema are created
+and migrated automatically on first import.
 
 ## Setup
 
-### 1. Install dependencies
+### 1. Install
 
 ```bash
 npm install
 ```
 
-The SQLite database is created and migrated automatically on first
-`npm run dev` / `npm run build`.
+### 2. Get a public URL (only for OAuth — not for live events)
 
-### 2. Meta app (one-time, manual)
+The Meta and Twitter OAuth callbacks need a public HTTPS URL. Easiest options:
+
+- **ngrok** free tier with a static domain ($8/mo, recommended)
+- **Cloudflare Tunnel** free
+- Or just use `http://localhost:3000` if your OAuth provider allows it (Twitter
+  allows http://localhost; Meta requires https)
+
+You only need this **while connecting accounts**. After that, you can run
+purely on localhost.
+
+### 3. Meta app
 
 1. Create an app at https://developers.facebook.com
-2. Add **Instagram** and **Webhooks** products
-3. Connect your IG Business/Creator account to a Facebook Page you own
+2. Add the **Instagram** product (skip Webhooks — we don't use them)
+3. Connect your IG Creator/Business account to a Facebook Page you own
 4. Add scopes: `instagram_basic`, `instagram_content_publish`,
-   `instagram_manage_comments`, `instagram_manage_messages`,
-   `instagram_manage_insights`, `pages_show_list`, `pages_read_engagement`,
-   `pages_manage_metadata`
-5. Set the OAuth redirect URI to your public URL +
-   `/api/meta/oauth/callback` (see ngrok step below)
-6. In Webhooks, subscribe Instagram to `messages`, `comments`, `mentions`.
-   Callback URL: public URL + `/api/webhooks/instagram`. Verify token: same
-   value as `META_WEBHOOK_VERIFY_TOKEN`
+   `instagram_manage_insights`, `pages_show_list`, `pages_read_engagement`
+5. Set OAuth redirect URI to your public URL + `/api/meta/oauth/callback`
+6. **Dev mode is fine** for using this on your own accounts — App Review is
+   only needed if you want to share the app with other users (you don't)
 
-### 3. Make your localhost reachable from Meta
+### 4. Twitter / X app
 
-Meta needs to call your machine for the OAuth redirect and webhook events.
-Use ngrok (free) or any tunnel:
+1. https://developer.x.com → new project (Free tier, 1,500 posts/month)
+2. User authentication settings: type **OAuth 2.0**, permissions **Read and
+   write**, callback URL = `your-url/api/twitter/oauth/callback`
 
-```bash
-ngrok http 3000
-```
+### 5. Configure env
 
-Take the `https://*.ngrok.app` URL and put it in `META_REDIRECT_URI` and
-`NEXT_PUBLIC_APP_URL`.
+Copy `.env.example` → `.env.local` and fill it in.
 
-### 4. Configure env
-
-Copy `.env.example` → `.env.local` and fill in:
-
-```env
-DB_PATH=data/app.db                  # default — leave as-is
-META_APP_ID=...
-META_APP_SECRET=...
-META_WEBHOOK_VERIFY_TOKEN=...
-META_REDIRECT_URI=https://your-tunnel.ngrok.app/api/meta/oauth/callback
-NEXT_PUBLIC_APP_URL=https://your-tunnel.ngrok.app
-CRON_SECRET=...                       # `openssl rand -hex 32`
-APP_API_KEY=...                       # `openssl rand -hex 32`, for the Chrome ext
-AI_GATEWAY_API_KEY=...                # optional, for AI caption
-BLOB_READ_WRITE_TOKEN=...             # optional, only if using Vercel Blob for media
-```
-
-### 5. Run
+### 6. Run
 
 ```bash
-npm run dev
+npm run dev          # http://localhost:3000
 ```
 
-Open http://localhost:3000 → click **Connect Instagram Business**.
+### 7. Set up a local cron (if you actually want scheduling)
 
-### 6. Cron jobs
-
-The scheduled-publish, refresh-token, and insight-pull jobs are HTTP endpoints
-under `/api/cron/*`. Locally, hit them via system cron, a launchd plist, or
-manually. Each requires `Authorization: Bearer $CRON_SECRET`.
-
-Example macOS launchd entry to publish due posts every minute:
+The publish cron is a regular HTTP endpoint. From your laptop's crontab:
 
 ```bash
-* * * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/publish-due
+* * * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/publish-due >/dev/null
 ```
+
+If your laptop is closed, posts wait in the queue. When you open it, anything
+scheduled within the last 24h publishes; older items are marked failed
+(adjustable via `STALE_HOURS` in the cron handler).
 
 ## Chrome extension
 
-See [extension/README.md](./extension/README.md). After setting `APP_API_KEY`,
-load the `extension/` folder in `chrome://extensions` (Developer Mode → Load
-unpacked).
+See [extension/README.md](./extension/README.md). The extension captures the
+current tab's images and text into draft posts via the v1 API.
 
 ## Useful commands
 
 ```bash
 npm run dev          # start Next.js
 npm run build        # production build
-npm run db:push      # apply schema changes without generating migration files
-npm run db:generate  # generate a new migration after schema edits
+npm run db:generate  # after schema edits
 npm run db:studio    # open Drizzle Studio against your local DB
 ```
-
-## What's intentionally not built
-
-- Following/unfollowing accounts programmatically
-- Posting comments or DMs to accounts you don't own
-- Liking other people's posts
-- Anything that needs a private/reverse-engineered IG API
-
-These are all against Instagram's Terms of Use and will get the account banned.

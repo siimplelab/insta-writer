@@ -16,6 +16,10 @@ export const runtime = "nodejs";
 export const maxDuration = 300;
 
 const BATCH = 5;
+// Anything queued more than this many hours in the past gets skipped and
+// marked failed — protects against e.g. "sale this weekend" posts going out
+// on Wednesday after a 4-day laptop closure.
+const STALE_HOURS = 24;
 
 export async function GET() {
   try {
@@ -24,19 +28,39 @@ export async function GET() {
     return r as Response;
   }
 
+  const now = new Date();
+  const staleCutoff = new Date(now.getTime() - STALE_HOURS * 3600_000);
+
+  // First: mark any queued post older than STALE_HOURS as failed-stale.
+  const stalePosts = await db
+    .update(schema.posts)
+    .set({
+      status: "failed",
+      error: `skipped — scheduled time was more than ${STALE_HOURS}h ago`,
+      updatedAt: now,
+    })
+    .where(
+      and(
+        eq(schema.posts.status, "queued"),
+        lte(schema.posts.scheduledFor, staleCutoff),
+      ),
+    )
+    .returning({ id: schema.posts.id });
+
   const due = await db
     .select()
     .from(schema.posts)
     .where(
       and(
         eq(schema.posts.status, "queued"),
-        lte(schema.posts.scheduledFor, new Date()),
+        lte(schema.posts.scheduledFor, now),
       ),
     )
     .orderBy(asc(schema.posts.scheduledFor))
     .limit(BATCH);
 
   const results: { id: string; ok: boolean; error?: string }[] = [];
+  const skipped: string[] = stalePosts.map((p) => p.id);
 
   for (const post of due) {
     const claim = await db
@@ -109,19 +133,35 @@ export async function GET() {
   }
 
   // ---- Twitter / X ---------------------------------------------------------
+  const staleTweets = await db
+    .update(schema.tweets)
+    .set({
+      status: "failed",
+      error: `skipped — scheduled time was more than ${STALE_HOURS}h ago`,
+      updatedAt: now,
+    })
+    .where(
+      and(
+        eq(schema.tweets.status, "queued"),
+        lte(schema.tweets.scheduledFor, staleCutoff),
+      ),
+    )
+    .returning({ id: schema.tweets.id });
+
   const dueTweets = await db
     .select()
     .from(schema.tweets)
     .where(
       and(
         eq(schema.tweets.status, "queued"),
-        lte(schema.tweets.scheduledFor, new Date()),
+        lte(schema.tweets.scheduledFor, now),
       ),
     )
     .orderBy(asc(schema.tweets.scheduledFor))
     .limit(BATCH);
 
   const tweetResults: { id: string; ok: boolean; error?: string }[] = [];
+  const tweetSkipped: string[] = staleTweets.map((t) => t.id);
   for (const tweet of dueTweets) {
     const claim = await db
       .update(schema.tweets)
@@ -172,7 +212,11 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    posts: { processed: results.length, results },
-    tweets: { processed: tweetResults.length, results: tweetResults },
+    posts: { processed: results.length, results, skippedAsStale: skipped },
+    tweets: {
+      processed: tweetResults.length,
+      results: tweetResults,
+      skippedAsStale: tweetSkipped,
+    },
   });
 }

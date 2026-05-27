@@ -74,9 +74,6 @@ export default async function Home() {
         {[
           [t.nav.compose, "/compose"],
           [t.nav.calendar, "/calendar"],
-          [t.nav.inbox, "/inbox"],
-          [t.nav.rules, "/rules"],
-          [t.nav.leads, "/leads"],
           [t.nav.analytics, "/analytics"],
           ["Twitter / X →", "/twitter"],
           [t.guidesNav, "/guides"],

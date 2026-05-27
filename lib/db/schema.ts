@@ -78,68 +78,6 @@ export const postMedia = sqliteTable("post_media", {
   order: integer("order").notNull().default(0),
 });
 
-export type MatchMode = "contains" | "exact" | "regex";
-
-export const dmRules = sqliteTable("dm_rules", {
-  id: id(),
-  accountId: text("account_id")
-    .notNull()
-    .references(() => igAccounts.id, { onDelete: "cascade" }),
-  name: text("name").notNull(),
-  triggerKeywords: text("trigger_keywords", { mode: "json" })
-    .$type<string[]>()
-    .notNull(),
-  match: text("match").$type<MatchMode>().notNull().default("contains"),
-  replyTemplate: text("reply_template").notNull(),
-  quickReplies: text("quick_replies", { mode: "json" }).$type<
-    { title: string; payload: string }[]
-  >(),
-  tagAsLead: integer("tag_as_lead", { mode: "boolean" }).notNull().default(true),
-  enabled: integer("enabled", { mode: "boolean" }).notNull().default(true),
-  createdAt: ts("created_at").notNull().$defaultFn(now),
-});
-
-export const leads = sqliteTable(
-  "leads",
-  {
-    id: id(),
-    accountId: text("account_id")
-      .notNull()
-      .references(() => igAccounts.id, { onDelete: "cascade" }),
-    igUserId: text("ig_user_id").notNull(),
-    username: text("username"),
-    firstSeen: ts("first_seen").notNull().$defaultFn(now),
-    lastMsgAt: ts("last_msg_at"),
-    sourceRuleId: text("source_rule_id").references(() => dmRules.id, {
-      onDelete: "set null",
-    }),
-    notes: text("notes"),
-  },
-  (t) => ({
-    uniqLead: uniqueIndex("leads_account_user_idx").on(t.accountId, t.igUserId),
-  }),
-);
-
-export type MsgDirection = "in" | "out";
-
-export const messagesLog = sqliteTable(
-  "messages_log",
-  {
-    id: id(),
-    accountId: text("account_id")
-      .notNull()
-      .references(() => igAccounts.id, { onDelete: "cascade" }),
-    direction: text("direction").$type<MsgDirection>().notNull(),
-    igUserId: text("ig_user_id").notNull(),
-    body: text("body"),
-    payload: text("payload", { mode: "json" }),
-    ts: ts("ts").notNull().$defaultFn(now),
-  },
-  (t) => ({
-    convIdx: index("msglog_conv_idx").on(t.accountId, t.igUserId, t.ts),
-  }),
-);
-
 // ---------------------------------------------------------------------------
 // Twitter / X
 // ---------------------------------------------------------------------------

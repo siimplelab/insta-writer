@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { and, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
 import { z } from "zod";
 
@@ -37,4 +38,17 @@ export async function createScheduledTweet(input: z.input<typeof createSchema>) 
   }
   revalidatePath("/twitter");
   return { id: tweet.id };
+}
+
+export async function deleteTweet(id: string) {
+  await db
+    .delete(schema.tweets)
+    .where(
+      and(
+        eq(schema.tweets.id, id),
+        inArray(schema.tweets.status, ["draft", "queued", "failed"]),
+      ),
+    );
+  revalidatePath("/twitter");
+  revalidatePath("/calendar");
 }
