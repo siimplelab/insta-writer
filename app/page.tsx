@@ -67,6 +67,7 @@ export default async function Home() {
           [t.nav.rules, "/rules"],
           [t.nav.leads, "/leads"],
           [t.nav.analytics, "/analytics"],
+          ["Twitter / X →", "/twitter"],
           [t.nav.settings, "/settings"],
         ].map(([label, href]) => (
           <Link

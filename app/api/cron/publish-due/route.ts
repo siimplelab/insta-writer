@@ -9,6 +9,8 @@ import {
   publishStoryImage,
   postFirstComment,
 } from "@/lib/meta/publish";
+import { ensureToken } from "@/lib/twitter/client";
+import { uploadImage, postTweet } from "@/lib/twitter/publish";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -106,5 +108,71 @@ export async function GET() {
     }
   }
 
-  return NextResponse.json({ processed: results.length, results });
+  // ---- Twitter / X ---------------------------------------------------------
+  const dueTweets = await db
+    .select()
+    .from(schema.tweets)
+    .where(
+      and(
+        eq(schema.tweets.status, "queued"),
+        lte(schema.tweets.scheduledFor, new Date()),
+      ),
+    )
+    .orderBy(asc(schema.tweets.scheduledFor))
+    .limit(BATCH);
+
+  const tweetResults: { id: string; ok: boolean; error?: string }[] = [];
+  for (const tweet of dueTweets) {
+    const claim = await db
+      .update(schema.tweets)
+      .set({
+        status: "publishing",
+        attempts: sql`${schema.tweets.attempts} + 1`,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(schema.tweets.id, tweet.id), eq(schema.tweets.status, "queued")))
+      .returning({ id: schema.tweets.id });
+    if (!claim.length) continue;
+
+    try {
+      const { token } = await ensureToken(tweet.accountId);
+      const mediaRows = await db.query.tweetMedia.findMany({
+        where: eq(schema.tweetMedia.tweetId, tweet.id),
+        orderBy: (m, { asc }) => [asc(m.order)],
+      });
+      const mediaIds: string[] = [];
+      for (const m of mediaRows) {
+        // Reuse a cached upload ID if a previous attempt got that far
+        const id = m.twMediaId ?? (await uploadImage(token, m.blobUrl, m.mime));
+        if (!m.twMediaId) {
+          await db
+            .update(schema.tweetMedia)
+            .set({ twMediaId: id })
+            .where(eq(schema.tweetMedia.id, m.id));
+        }
+        mediaIds.push(id);
+      }
+      const posted = await postTweet(token, {
+        text: tweet.text,
+        mediaIds: mediaIds.length ? mediaIds : undefined,
+      });
+      await db
+        .update(schema.tweets)
+        .set({ status: "posted", postedId: posted.id, error: null, updatedAt: new Date() })
+        .where(eq(schema.tweets.id, tweet.id));
+      tweetResults.push({ id: tweet.id, ok: true });
+    } catch (e) {
+      const err = e instanceof Error ? e.message : String(e);
+      await db
+        .update(schema.tweets)
+        .set({ status: "failed", error: err, updatedAt: new Date() })
+        .where(eq(schema.tweets.id, tweet.id));
+      tweetResults.push({ id: tweet.id, ok: false, error: err });
+    }
+  }
+
+  return NextResponse.json({
+    posts: { processed: results.length, results },
+    tweets: { processed: tweetResults.length, results: tweetResults },
+  });
 }
