@@ -6,8 +6,6 @@ import {
   listPages,
   resolveInstagramAccount,
 } from "@/lib/meta/oauth";
-import { sql } from "drizzle-orm";
-
 export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
@@ -49,8 +47,6 @@ export async function GET(req: NextRequest) {
       });
     linked.push(acct.username);
   }
-
-  await db.execute(sql`select 1`); // keep connection warm
 
   const dest = new URL("/?connected=" + encodeURIComponent(linked.join(",")), url.origin);
   const res = NextResponse.redirect(dest);

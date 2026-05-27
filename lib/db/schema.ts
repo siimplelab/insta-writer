@@ -1,70 +1,64 @@
 import {
-  pgTable,
-  uuid,
+  sqliteTable,
   text,
-  timestamp,
-  boolean,
   integer,
-  jsonb,
-  pgEnum,
   index,
   uniqueIndex,
-  date,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/sqlite-core";
+import { randomUUID } from "node:crypto";
 
-export const postKind = pgEnum("post_kind", [
-  "photo",
-  "carousel",
-  "reel",
-  "story",
-]);
+const id = () =>
+  text("id")
+    .primaryKey()
+    .$defaultFn(() => randomUUID());
 
-export const postStatus = pgEnum("post_status", [
-  "draft",
-  "queued",
-  "publishing",
-  "posted",
-  "failed",
-]);
+const ts = (col: string) =>
+  integer(col, { mode: "timestamp_ms" });
 
-export const matchMode = pgEnum("dm_match_mode", ["contains", "exact", "regex"]);
+const now = () => new Date();
 
-export const msgDirection = pgEnum("msg_direction", ["in", "out"]);
-
-export const igAccounts = pgTable(
+export const igAccounts = sqliteTable(
   "ig_accounts",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: id(),
     igUserId: text("ig_user_id").notNull(),
     pageId: text("page_id").notNull(),
     handle: text("handle").notNull(),
     longLivedToken: text("long_lived_token").notNull(),
-    tokenExpiresAt: timestamp("token_expires_at", { withTimezone: true }).notNull(),
-    connectedAt: timestamp("connected_at", { withTimezone: true }).defaultNow().notNull(),
+    tokenExpiresAt: ts("token_expires_at").notNull(),
+    connectedAt: ts("connected_at").notNull().$defaultFn(now),
   },
   (t) => ({
     igUserIdx: uniqueIndex("ig_accounts_ig_user_id_idx").on(t.igUserId),
   }),
 );
 
-export const posts = pgTable(
+export type PostKind = "photo" | "carousel" | "reel" | "story";
+export type PostStatus =
+  | "draft"
+  | "queued"
+  | "publishing"
+  | "posted"
+  | "failed";
+
+export const posts = sqliteTable(
   "posts",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
-    accountId: uuid("account_id")
+    id: id(),
+    accountId: text("account_id")
       .notNull()
       .references(() => igAccounts.id, { onDelete: "cascade" }),
-    kind: postKind("kind").notNull(),
+    kind: text("kind").$type<PostKind>().notNull(),
     caption: text("caption"),
     firstComment: text("first_comment"),
-    scheduledFor: timestamp("scheduled_for", { withTimezone: true }).notNull(),
-    status: postStatus("status").notNull().default("draft"),
+    scheduledFor: ts("scheduled_for").notNull(),
+    status: text("status").$type<PostStatus>().notNull().default("draft"),
     igMediaId: text("ig_media_id"),
     igContainerId: text("ig_container_id"),
     error: text("error"),
     attempts: integer("attempts").notNull().default(0),
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt: ts("created_at").notNull().$defaultFn(now),
+    updatedAt: ts("updated_at").notNull().$defaultFn(now),
   },
   (t) => ({
     dueIdx: index("posts_due_idx").on(t.status, t.scheduledFor),
@@ -72,9 +66,9 @@ export const posts = pgTable(
   }),
 );
 
-export const postMedia = pgTable("post_media", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  postId: uuid("post_id")
+export const postMedia = sqliteTable("post_media", {
+  id: id(),
+  postId: text("post_id")
     .notNull()
     .references(() => posts.id, { onDelete: "cascade" }),
   blobUrl: text("blob_url").notNull(),
@@ -84,33 +78,39 @@ export const postMedia = pgTable("post_media", {
   order: integer("order").notNull().default(0),
 });
 
-export const dmRules = pgTable("dm_rules", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  accountId: uuid("account_id")
+export type MatchMode = "contains" | "exact" | "regex";
+
+export const dmRules = sqliteTable("dm_rules", {
+  id: id(),
+  accountId: text("account_id")
     .notNull()
     .references(() => igAccounts.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  triggerKeywords: text("trigger_keywords").array().notNull(),
-  match: matchMode("match").notNull().default("contains"),
+  triggerKeywords: text("trigger_keywords", { mode: "json" })
+    .$type<string[]>()
+    .notNull(),
+  match: text("match").$type<MatchMode>().notNull().default("contains"),
   replyTemplate: text("reply_template").notNull(),
-  quickReplies: jsonb("quick_replies").$type<{ title: string; payload: string }[]>(),
-  tagAsLead: boolean("tag_as_lead").notNull().default(true),
-  enabled: boolean("enabled").notNull().default(true),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  quickReplies: text("quick_replies", { mode: "json" }).$type<
+    { title: string; payload: string }[]
+  >(),
+  tagAsLead: integer("tag_as_lead", { mode: "boolean" }).notNull().default(true),
+  enabled: integer("enabled", { mode: "boolean" }).notNull().default(true),
+  createdAt: ts("created_at").notNull().$defaultFn(now),
 });
 
-export const leads = pgTable(
+export const leads = sqliteTable(
   "leads",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
-    accountId: uuid("account_id")
+    id: id(),
+    accountId: text("account_id")
       .notNull()
       .references(() => igAccounts.id, { onDelete: "cascade" }),
     igUserId: text("ig_user_id").notNull(),
     username: text("username"),
-    firstSeen: timestamp("first_seen", { withTimezone: true }).defaultNow().notNull(),
-    lastMsgAt: timestamp("last_msg_at", { withTimezone: true }),
-    sourceRuleId: uuid("source_rule_id").references(() => dmRules.id, {
+    firstSeen: ts("first_seen").notNull().$defaultFn(now),
+    lastMsgAt: ts("last_msg_at"),
+    sourceRuleId: text("source_rule_id").references(() => dmRules.id, {
       onDelete: "set null",
     }),
     notes: text("notes"),
@@ -120,37 +120,40 @@ export const leads = pgTable(
   }),
 );
 
-export const messagesLog = pgTable(
+export type MsgDirection = "in" | "out";
+
+export const messagesLog = sqliteTable(
   "messages_log",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
-    accountId: uuid("account_id")
+    id: id(),
+    accountId: text("account_id")
       .notNull()
       .references(() => igAccounts.id, { onDelete: "cascade" }),
-    direction: msgDirection("direction").notNull(),
+    direction: text("direction").$type<MsgDirection>().notNull(),
     igUserId: text("ig_user_id").notNull(),
     body: text("body"),
-    payload: jsonb("payload"),
-    ts: timestamp("ts", { withTimezone: true }).defaultNow().notNull(),
+    payload: text("payload", { mode: "json" }),
+    ts: ts("ts").notNull().$defaultFn(now),
   },
   (t) => ({
     convIdx: index("msglog_conv_idx").on(t.accountId, t.igUserId, t.ts),
   }),
 );
 
-export const insightsSnapshots = pgTable(
+export const insightsSnapshots = sqliteTable(
   "insights_snapshots",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
-    accountId: uuid("account_id")
+    id: id(),
+    accountId: text("account_id")
       .notNull()
       .references(() => igAccounts.id, { onDelete: "cascade" }),
-    day: date("day").notNull(),
+    // ISO date string YYYY-MM-DD
+    day: text("day").notNull(),
     reach: integer("reach"),
     impressions: integer("impressions"),
     profileViews: integer("profile_views"),
     followers: integer("followers"),
-    raw: jsonb("raw"),
+    raw: text("raw", { mode: "json" }),
   },
   (t) => ({
     uniqDay: uniqueIndex("insights_account_day_idx").on(t.accountId, t.day),

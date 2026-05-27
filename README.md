@@ -1,8 +1,7 @@
 # Instagram Writer
 
-Personal marketing automation for your own Instagram Business/Creator accounts.
-
-Built on Meta's **official** APIs only — no browser automation, no
+Personal marketing automation for your own Instagram Business/Creator accounts,
+built on Meta's **official** APIs only — no browser automation, no
 auto-follow/unfollow, no mass-comment-on-other-people's-posts (all of which
 violate Instagram's ToS and get accounts banned).
 
@@ -13,75 +12,111 @@ violate Instagram's ToS and get accounts banned).
 - **AI caption** suggestions from your image (Vercel AI Gateway)
 - **DM lead-gen**: keyword-triggered auto-replies to incoming DMs on your own
   accounts, captured into a leads table with CSV export
-- **Analytics**: hourly pull from the Insights API
+- **Analytics**: pull from the Insights API
+- **Chrome extension** (`extension/`): one-click capture from any webpage into
+  draft posts
+- **i18n**: English + Korean
 
-## Stack
+## Architecture
 
-Next.js 16 (App Router) · Postgres (Neon) · Drizzle · Vercel Blob ·
-Vercel Cron · Vercel AI Gateway · shadcn-style Tailwind.
+**Local-first.** Storage is **SQLite** in a local file (`data/app.db` by
+default). There is no external database. The Vercel Function filesystem is
+ephemeral so a Vercel deploy of this app won't persist data — **run it on
+your own machine** with `npm run dev`.
+
+Stack: Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Vercel Blob
+(optional, for media) · Vercel AI Gateway · Tailwind.
 
 ## Setup
 
-### 1. Vercel + databases
+### 1. Install dependencies
 
 ```bash
-vercel link
-# In the dashboard, add the Neon Postgres + Blob integrations from the Marketplace.
-vercel env pull .env.local
+npm install
 ```
+
+The SQLite database is created and migrated automatically on first
+`npm run dev` / `npm run build`.
 
 ### 2. Meta app (one-time, manual)
 
 1. Create an app at https://developers.facebook.com
-2. Add **Instagram** and **Webhooks** products.
-3. Connect your IG Business/Creator account to a Facebook Page you own.
-4. Add these scopes to the app: `instagram_basic`, `instagram_content_publish`,
+2. Add **Instagram** and **Webhooks** products
+3. Connect your IG Business/Creator account to a Facebook Page you own
+4. Add scopes: `instagram_basic`, `instagram_content_publish`,
    `instagram_manage_comments`, `instagram_manage_messages`,
    `instagram_manage_insights`, `pages_show_list`, `pages_read_engagement`,
-   `pages_manage_metadata`.
-5. Set the OAuth redirect URI to
-   `${NEXT_PUBLIC_APP_URL}/api/meta/oauth/callback`.
-6. In the Webhooks product, subscribe the Instagram object to `messages`,
-   `comments`, `mentions`. Callback URL:
-   `${NEXT_PUBLIC_APP_URL}/api/webhooks/instagram`. Verify token: same value as
-   `META_WEBHOOK_VERIFY_TOKEN` in your env.
-7. In **dev mode**, the app works for your own connected accounts. App Review
-   is only needed if you want to use it for other people's accounts (you don't,
-   per the scope of this project).
+   `pages_manage_metadata`
+5. Set the OAuth redirect URI to your public URL +
+   `/api/meta/oauth/callback` (see ngrok step below)
+6. In Webhooks, subscribe Instagram to `messages`, `comments`, `mentions`.
+   Callback URL: public URL + `/api/webhooks/instagram`. Verify token: same
+   value as `META_WEBHOOK_VERIFY_TOKEN`
 
-Copy `.env.example` → `.env.local` and fill in `META_APP_ID`,
-`META_APP_SECRET`, `META_WEBHOOK_VERIFY_TOKEN`, `META_REDIRECT_URI`,
-`CRON_SECRET`, `NEXT_PUBLIC_APP_URL`, and `AI_GATEWAY_API_KEY` (from
-Vercel AI Gateway).
+### 3. Make your localhost reachable from Meta
 
-### 3. Database migrations
+Meta needs to call your machine for the OAuth redirect and webhook events.
+Use ngrok (free) or any tunnel:
 
 ```bash
-npm run db:push
+ngrok http 3000
 ```
 
-### 4. Dev
+Take the `https://*.ngrok.app` URL and put it in `META_REDIRECT_URI` and
+`NEXT_PUBLIC_APP_URL`.
+
+### 4. Configure env
+
+Copy `.env.example` → `.env.local` and fill in:
+
+```env
+DB_PATH=data/app.db                  # default — leave as-is
+META_APP_ID=...
+META_APP_SECRET=...
+META_WEBHOOK_VERIFY_TOKEN=...
+META_REDIRECT_URI=https://your-tunnel.ngrok.app/api/meta/oauth/callback
+NEXT_PUBLIC_APP_URL=https://your-tunnel.ngrok.app
+CRON_SECRET=...                       # `openssl rand -hex 32`
+APP_API_KEY=...                       # `openssl rand -hex 32`, for the Chrome ext
+AI_GATEWAY_API_KEY=...                # optional, for AI caption
+BLOB_READ_WRITE_TOKEN=...             # optional, only if using Vercel Blob for media
+```
+
+### 5. Run
 
 ```bash
 npm run dev
 ```
 
-Visit http://localhost:3000 and click **Connect Instagram Business**.
+Open http://localhost:3000 → click **Connect Instagram Business**.
 
-For webhook + OAuth testing locally you need a public URL. Use a Vercel
-preview deployment or a tunnel (`ngrok http 3000`) and set
-`NEXT_PUBLIC_APP_URL` + `META_REDIRECT_URI` accordingly.
+### 6. Cron jobs
 
-## Crons
+The scheduled-publish, refresh-token, and insight-pull jobs are HTTP endpoints
+under `/api/cron/*`. Locally, hit them via system cron, a launchd plist, or
+manually. Each requires `Authorization: Bearer $CRON_SECRET`.
 
-Defined in `vercel.ts`:
+Example macOS launchd entry to publish due posts every minute:
 
-- `* * * * *` → `/api/cron/publish-due` (publish queued posts)
-- `0 3 * * *` → `/api/cron/refresh-tokens` (refresh long-lived tokens 14d ahead)
-- `15 * * * *` → `/api/cron/pull-insights`
+```bash
+* * * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/publish-due
+```
 
-Cron handlers require an `x-cron-secret: $CRON_SECRET` header. Vercel injects
-the secret automatically when crons are configured via `vercel.ts`.
+## Chrome extension
+
+See [extension/README.md](./extension/README.md). After setting `APP_API_KEY`,
+load the `extension/` folder in `chrome://extensions` (Developer Mode → Load
+unpacked).
+
+## Useful commands
+
+```bash
+npm run dev          # start Next.js
+npm run build        # production build
+npm run db:push      # apply schema changes without generating migration files
+npm run db:generate  # generate a new migration after schema edits
+npm run db:studio    # open Drizzle Studio against your local DB
+```
 
 ## What's intentionally not built
 
@@ -90,6 +125,4 @@ the secret automatically when crons are configured via `vercel.ts`.
 - Liking other people's posts
 - Anything that needs a private/reverse-engineered IG API
 
-These are all against Instagram's Terms of Use and will get the account
-banned. If you need broader "growth hacking," the honest answer is: pay for
-ads, post good content, and engage manually.
+These are all against Instagram's Terms of Use and will get the account banned.

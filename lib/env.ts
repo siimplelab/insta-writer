@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const schema = z.object({
-  DATABASE_URL: z.string().url(),
+  DB_PATH: z.string().min(1).default("data/app.db"),
   META_APP_ID: z.string().min(1),
   META_APP_SECRET: z.string().min(1),
   META_WEBHOOK_VERIFY_TOKEN: z.string().min(1),
@@ -15,7 +15,7 @@ const schema = z.object({
 });
 
 export const env = schema.parse({
-  DATABASE_URL: process.env.DATABASE_URL,
+  DB_PATH: process.env.DB_PATH,
   META_APP_ID: process.env.META_APP_ID,
   META_APP_SECRET: process.env.META_APP_SECRET,
   META_WEBHOOK_VERIFY_TOKEN: process.env.META_WEBHOOK_VERIFY_TOKEN,
