@@ -41,7 +41,7 @@ export default async function HubLanding() {
   ];
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
+    <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
       <section className="mx-auto max-w-3xl space-y-5 text-center md:text-left">
         <Badge variant="secondary" className="mx-auto inline-flex md:mx-0">
           For indie founders launching a new digital product
