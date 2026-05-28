@@ -1,8 +1,8 @@
-# IG Writer — Chrome Extension
+# miinimal — Chrome Extension
 
-Companion extension for the [IG Writer app](https://insta-writer.vercel.app).
-Captures images and text from any webpage into draft Instagram posts in your
-app, with AI-generated captions.
+Companion extension for the miinimal app. Captures images and text from any
+webpage into draft Instagram / X posts in the scheduler, with AI-generated
+captions.
 
 ## What it does
 
@@ -12,7 +12,7 @@ app, with AI-generated captions.
   Vercel AI Gateway) with the page context as input
 - POSTs to `/api/v1/drafts` on your app, which downloads the images into
   Vercel Blob and creates a `draft` or `queued` post
-- Right-click an image → "Save image to IG Writer draft" for one-click capture
+- Right-click an image → "Save image to miinimal draft" for one-click capture
 
 Auth is a single bearer API key (`APP_API_KEY`) you set on the server and
 paste into the extension's Options page.

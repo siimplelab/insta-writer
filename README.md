@@ -1,6 +1,6 @@
-# Marketing Atlas
+# miinimal
 
-**A hub for indie founders: how to market a new digital product, with AI skills you can drop into Claude Code or Codex.**
+**A minimal marketing toolkit for indie founders.** Just what works — AI skills you drop into Claude Code or Codex, focused guides, and one-tool-per-job working software.
 
 Built as a Next.js 16 web hub AND a Claude Code workspace. Information lives in the web app (guides, skills, resources). AI skills + specialist subagents live in `.claude/` for direct use from any Claude Code session opened against this repo.
 
@@ -15,6 +15,7 @@ Built as a Next.js 16 web hub AND a Claude Code workspace. Information lives in 
 **Working tools:**
 - `/tools/scheduler` — IG + X multi-platform scheduler (official APIs, local-first)
 - `/tools/visual-builder` — programmatic social-image generator (Next.js `next/og`)
+- `/tools/image-generators` — curated catalog of widely-used AI image-gen services (Midjourney, ChatGPT, Gemini, Flux, Ideogram, Recraft, and more)
 - `/tools/page-capture` — Chrome extension for capturing webpage content into draft posts
 
 **Claude Code workspace:**
@@ -23,7 +24,7 @@ Built as a Next.js 16 web hub AND a Claude Code workspace. Information lives in 
 
 ## Stack
 
-Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Tailwind · Vercel AI Gateway · `next/og` for image generation. Local-first SQLite at `data/app.db`.
+Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Tailwind v4 + hand-rolled shadcn-style components · `next/og` for image generation. Local-first SQLite at `data/app.db`.
 
 ## Setup
 

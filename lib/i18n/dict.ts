@@ -4,9 +4,9 @@ export const DEFAULT_LOCALE: Locale = "en";
 
 export const dict = {
   en: {
-    appTitle: "Marketing Atlas",
+    appTitle: "miinimal",
     appTagline:
-      "A hub for indie founders: how to market a new digital product, with AI skills you can drop into Claude Code or Codex.",
+      "A minimal marketing toolkit for indie founders. Just what works — AI skills, focused guides, and one-tool-per-job software you can drop into Claude Code or Codex.",
 
     // Top-level hub navigation
     hub: {
@@ -124,9 +124,9 @@ export const dict = {
     dbError: "Could not reach the database. Restart the dev server to auto-create it.",
   },
   ko: {
-    appTitle: "마케팅 아틀라스",
+    appTitle: "miinimal",
     appTagline:
-      "1인 창업자를 위한 허브: 디지털 제품을 마케팅하는 방법과, Claude Code · Codex에 바로 붙여 쓰는 AI 스킬.",
+      "1인 창업자를 위한 미니멀 마케팅 키트. 꼭 필요한 것만 — AI 스킬, 핵심 가이드, 그리고 Claude Code · Codex에 바로 붙여 쓰는 한 가지 일에 충실한 도구들.",
 
     hub: {
       startHere: "시작하기",

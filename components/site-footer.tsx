@@ -5,8 +5,8 @@ export function SiteFooter() {
     <footer className="border-t border-border mt-16">
       <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
         <div>
-          <span className="font-medium text-foreground">Marketing Atlas</span>{" "}
-          — a hub for indie founders.
+          <span className="font-medium text-foreground">miinimal</span>{" "}
+          — minimal marketing for indie founders.
         </div>
         <nav className="flex flex-wrap gap-x-5 gap-y-2">
           <Link href="/start-here" className="hover:text-foreground">

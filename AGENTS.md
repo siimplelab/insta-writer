@@ -4,9 +4,9 @@
 This version (16) has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# Marketing Atlas — Claude Code workspace
+# miinimal — Claude Code workspace
 
-This repository is a **marketing workspace for indie founders** built on Next.js 16. When you open it in Claude Code, you get:
+This repository is a **minimal marketing toolkit for indie founders** built on Next.js 16. When you open it in Claude Code, you get:
 
 - **6 specialist subagents** under `.claude/agents/` for marketing tasks:
   - `gtm-strategist` — go-to-market strategy
@@ -27,6 +27,7 @@ This repository is a **marketing workspace for indie founders** built on Next.js
 
 - `/tools/scheduler` — IG + X scheduler, local SQLite (this is the working tool from earlier iterations)
 - `/tools/visual-builder` — code-driven social-image generator using `next/og`
+- `/tools/image-generators` — curated catalog of widely-used AI image-gen services
 - `/tools/page-capture` — Chrome extension for capturing webpage content into draft posts
 
 ## Project conventions

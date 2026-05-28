@@ -3,13 +3,13 @@
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-    id: "ig-writer-draft-image",
-    title: "Save image to Marketing Atlas draft",
+    id: "miinimal-draft-image",
+    title: "Save image to miinimal draft",
     contexts: ["image"],
   });
   chrome.contextMenus.create({
-    id: "ig-writer-draft-selection",
-    title: "Save selection to Marketing Atlas caption",
+    id: "miinimal-draft-selection",
+    title: "Save selection to miinimal caption",
     contexts: ["selection"],
   });
 });
@@ -41,7 +41,7 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
       await chrome.runtime.openOptionsPage();
       return;
     }
-    if (info.menuItemId === "ig-writer-draft-image" && info.srcUrl) {
+    if (info.menuItemId === "miinimal-draft-image" && info.srcUrl) {
       await api("/api/v1/drafts", {
         method: "POST",
         body: JSON.stringify({
@@ -52,13 +52,13 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
         }),
       });
       await flash("✓ Saved as IG draft");
-    } else if (info.menuItemId === "ig-writer-draft-selection" && info.selectionText) {
+    } else if (info.menuItemId === "miinimal-draft-selection" && info.selectionText) {
       // Save just text — no media. Requires at least one media per the schema, so we skip until
       // user opens popup. Notify them.
-      await flash("Open Marketing Atlas popup to pick an image for this caption.");
+      await flash("Open miinimal popup to pick an image for this caption.");
     }
   } catch (e) {
-    await flash("Marketing Atlas error: " + e.message);
+    await flash("miinimal error: " + e.message);
   }
 });
 
@@ -73,7 +73,7 @@ async function flash(message) {
     chrome.notifications.create({
       type: "basic",
       iconUrl: TINY_PNG,
-      title: "Marketing Atlas",
+      title: "miinimal",
       message,
     });
   } catch {

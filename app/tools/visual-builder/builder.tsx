@@ -19,9 +19,9 @@ type TemplateKey = (typeof TEMPLATES)[number]["key"];
 
 export function VisualBuilder() {
   const [template, setTemplate] = useState<TemplateKey>("social-share");
-  const [title, setTitle] = useState("Marketing Atlas");
-  const [subtitle, setSubtitle] = useState("A hub for indie founders launching new digital products.");
-  const [brand, setBrand] = useState("Marketing Atlas");
+  const [title, setTitle] = useState("miinimal");
+  const [subtitle, setSubtitle] = useState("Minimal marketing for indie founders launching new digital products.");
+  const [brand, setBrand] = useState("miinimal");
   const [accent, setAccent] = useState("#0ea5e9");
   const [bg, setBg] = useState("#0a0a0a");
 

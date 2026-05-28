@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Marketing Atlas — a hub for indie founders",
+  title: "miinimal — minimal marketing for indie founders",
   description:
-    "How to market a new digital product, with AI skills you can drop into Claude Code or Codex. Marketing-on-autopilot, video, ASO, launches.",
+    "A minimal marketing toolkit. AI skills you drop into Claude Code or Codex, focused guides, and one-tool-per-job software. Marketing on autopilot, video, ASO, launches.",
 };
 
 export default function RootLayout({
