@@ -1,7 +1,12 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { db, schema } from "@/lib/db/client";
 import { Composer } from "./composer";
 import { safeQuery } from "@/lib/db/safe";
 import { getDict } from "@/lib/i18n/server";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -16,25 +21,38 @@ export default async function ComposePage() {
   );
 
   return (
-    <main className="mx-auto max-w-2xl p-8 space-y-6">
-      <h1 className="text-2xl font-bold">{t.compose.title}</h1>
+    <div className="mx-auto max-w-3xl px-6 py-10 md:py-12 space-y-8">
+      <Button variant="ghost" size="sm" className="-ml-3" asChild>
+        <Link href="/tools/scheduler"><ArrowLeft className="h-4 w-4" /> Scheduler</Link>
+      </Button>
+
+      <header className="space-y-3">
+        <Badge variant="secondary">Compose · Instagram</Badge>
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{t.compose.title}</h1>
+      </header>
+
       {error && (
-        <div className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-          {t.dbError}
-          <pre className="mt-2 text-xs opacity-70">{error}</pre>
-        </div>
+        <Alert variant="warning">
+          <AlertTitle>Database issue</AlertTitle>
+          <AlertDescription>{t.dbError}</AlertDescription>
+        </Alert>
       )}
+
       {!error && accounts.length === 0 ? (
-        <div className="space-y-2 text-sm">
-          <p className="text-neutral-500">{t.compose.connectFirst}</p>
-          <a href="/tools/scheduler" className="inline-block underline">
-            ← Go to scheduler
-          </a>
-          <span className="mx-2 text-neutral-400">·</span>
-          <a href="/guides/switch-to-creator" className="inline-block underline">
-            {t.onboardingCta}
-          </a>
-        </div>
+        <Alert variant="info">
+          <AlertTitle>Connect an account first</AlertTitle>
+          <AlertDescription className="space-y-2">
+            <p>{t.compose.connectFirst}</p>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/tools/scheduler">← Go to scheduler</Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/guides/switch-to-creator">{t.onboardingCta}</Link>
+              </Button>
+            </div>
+          </AlertDescription>
+        </Alert>
       ) : (
         accounts.length > 0 && (
           <Composer
@@ -60,6 +78,6 @@ export default async function ComposePage() {
           />
         )
       )}
-    </main>
+    </div>
   );
 }

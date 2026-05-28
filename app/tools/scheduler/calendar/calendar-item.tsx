@@ -1,17 +1,23 @@
 "use client";
 
 import { useTransition } from "react";
+import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { deletePost } from "@/app/actions/posts";
 import { deleteTweet } from "@/app/actions/tweets";
 
-const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300",
-  queued: "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
-  publishing:
-    "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
-  posted: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
-  failed: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
+const STATUS_VARIANT: Record<
+  string,
+  "default" | "secondary" | "outline" | "success" | "warning" | "info" | "destructive"
+> = {
+  draft: "outline",
+  queued: "info",
+  publishing: "warning",
+  posted: "success",
+  failed: "destructive",
 };
 
 type Row = {
@@ -49,40 +55,38 @@ export function CalendarItem({
   }
 
   return (
-    <li className="rounded border p-3 text-sm">
-      <div className="mb-1 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-neutral-500">
-            {row.when.toISOString().slice(11, 16)}
-          </span>
-          <span
-            className={
-              "rounded px-1.5 py-0.5 text-xs font-medium " +
-              (STATUS_COLORS[row.status] ?? STATUS_COLORS.draft)
-            }
-          >
-            {row.status}
-          </span>
-          <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-            {row.platform === "instagram" ? `IG ${row.kind}` : "X / tweet"}
-          </span>
-        </div>
-        {canDelete && (
-          <button
-            onClick={onDelete}
-            disabled={pending}
-            className="text-xs text-red-600 hover:underline disabled:opacity-50"
-          >
-            {labels.delete}
-          </button>
-        )}
-      </div>
-      <p className="whitespace-pre-wrap text-neutral-800 dark:text-neutral-200 line-clamp-3">
-        {row.caption || <span className="italic text-neutral-400">(no caption)</span>}
-      </p>
-      {row.error && (
-        <p className="mt-1 text-xs text-red-600">{row.error}</p>
-      )}
+    <li>
+      <Card>
+        <CardContent className="p-4">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-xs text-muted-foreground">
+                {row.when.toISOString().slice(11, 16)}
+              </span>
+              <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{row.status}</Badge>
+              <Badge variant="outline">
+                {row.platform === "instagram" ? `IG ${row.kind}` : "X / tweet"}
+              </Badge>
+            </div>
+            {canDelete && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onDelete}
+                disabled={pending}
+                className="h-7 text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                {labels.delete}
+              </Button>
+            )}
+          </div>
+          <p className="line-clamp-3 whitespace-pre-wrap text-sm">
+            {row.caption || <span className="italic text-muted-foreground">(no caption)</span>}
+          </p>
+          {row.error && <p className="mt-2 text-xs text-destructive">{row.error}</p>}
+        </CardContent>
+      </Card>
     </li>
   );
 }

@@ -1,7 +1,12 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { db, schema } from "@/lib/db/client";
 import { asc } from "drizzle-orm";
 import { safeQuery } from "@/lib/db/safe";
 import { getDict } from "@/lib/i18n/server";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { CalendarItem } from "./calendar-item";
 
 export const dynamic = "force-dynamic";
@@ -41,19 +46,18 @@ export default async function CalendarPage() {
       error: p.error,
       postedId: p.igMediaId,
     })),
-    ...tweetsRes.data.map<Row>((t) => ({
-      id: t.id,
+    ...tweetsRes.data.map<Row>((tw) => ({
+      id: tw.id,
       platform: "twitter",
-      when: t.scheduledFor,
+      when: tw.scheduledFor,
       kind: "tweet",
-      caption: t.text,
-      status: t.status,
-      error: t.error,
-      postedId: t.postedId,
+      caption: tw.text,
+      status: tw.status,
+      error: tw.error,
+      postedId: tw.postedId,
     })),
   ].sort((a, b) => a.when.getTime() - b.when.getTime());
 
-  // Group by day
   const groups = new Map<string, Row[]>();
   for (const r of rows) {
     const key = r.when.toISOString().slice(0, 10);
@@ -64,20 +68,32 @@ export default async function CalendarPage() {
   const dayKeys = Array.from(groups.keys()).sort();
 
   return (
-    <main className="mx-auto max-w-4xl p-8 space-y-4">
-      <h1 className="text-2xl font-bold">{t.calendar.title}</h1>
+    <div className="mx-auto max-w-4xl px-6 py-10 md:py-12 space-y-8">
+      <Button variant="ghost" size="sm" className="-ml-3" asChild>
+        <Link href="/tools/scheduler"><ArrowLeft className="h-4 w-4" /> Scheduler</Link>
+      </Button>
+
+      <header className="space-y-3">
+        <Badge variant="secondary">{rows.length} items</Badge>
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{t.calendar.title}</h1>
+      </header>
+
       {error && (
-        <div className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-          {t.dbError}
-        </div>
+        <Alert variant="warning">
+          <AlertTitle>Database issue</AlertTitle>
+          <AlertDescription>{t.dbError}</AlertDescription>
+        </Alert>
       )}
+
       {!error && rows.length === 0 ? (
-        <p className="text-sm text-neutral-500">{t.calendar.empty}</p>
+        <Alert>
+          <AlertDescription>{t.calendar.empty}</AlertDescription>
+        </Alert>
       ) : (
         <div className="space-y-6">
           {dayKeys.map((day) => (
             <section key={day} className="space-y-2">
-              <h2 className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {day}
               </h2>
               <ul className="space-y-2">
@@ -97,6 +113,6 @@ export default async function CalendarPage() {
           ))}
         </div>
       )}
-    </main>
+    </div>
   );
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Marketing Atlas",
+  title: "Marketing Atlas — a hub for indie founders",
   description:
-    "A hub for indie founders: how to market a new digital product, with AI skills you can drop into Claude Code or Codex.",
+    "How to market a new digital product, with AI skills you can drop into Claude Code or Codex. Marketing-on-autopilot, video, ASO, launches.",
 };
 
 export default function RootLayout({
@@ -29,8 +31,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
+      <body className="flex min-h-full flex-col bg-background text-foreground">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
         <Toaster richColors position="top-right" />
       </body>
     </html>
