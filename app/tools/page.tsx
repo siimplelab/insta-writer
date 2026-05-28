@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CalendarClock, Image as ImageIcon, Puzzle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarClock, Image as ImageIcon, Puzzle, Wand2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +31,13 @@ export default async function ToolsIndex() {
       desc: t.pageCapture.tagline,
       icon: Puzzle,
       badge: "Chrome extension",
+    },
+    {
+      href: "/tools/image-generators",
+      title: "AI image generators",
+      desc: "Catalog of widely-used image-gen services (Midjourney, ChatGPT, Gemini, Flux, Ideogram, Recraft, and more) with honest one-line assessments.",
+      icon: Wand2,
+      badge: "Catalog",
     },
   ];
 
