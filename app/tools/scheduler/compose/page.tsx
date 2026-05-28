@@ -21,7 +21,7 @@ export default async function ComposePage() {
   );
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10 md:py-12 space-y-8">
+    <div className="mx-auto max-w-5xl px-6 py-10 md:py-12 space-y-8">
       <Button variant="ghost" size="sm" className="-ml-3" asChild>
         <Link href="/tools/scheduler"><ArrowLeft className="h-4 w-4" /> Scheduler</Link>
       </Button>

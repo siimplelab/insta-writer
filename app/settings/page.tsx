@@ -15,7 +15,7 @@ export default async function SettingsPage() {
   const apiKeyConfigured = !!process.env.APP_API_KEY && process.env.APP_API_KEY.length >= 16;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10 md:py-12 space-y-8">
+    <div className="mx-auto max-w-5xl px-6 py-10 md:py-12 space-y-8">
       <Button variant="ghost" size="sm" className="-ml-3" asChild>
         <Link href="/"><ArrowLeft className="h-4 w-4" /> Home</Link>
       </Button>

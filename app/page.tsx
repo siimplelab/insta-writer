@@ -42,8 +42,8 @@ export default async function HubLanding() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
-      <section className="mx-auto max-w-3xl space-y-5 text-center md:text-left">
-        <Badge variant="secondary" className="mx-auto inline-flex md:mx-0">
+      <section className="max-w-3xl space-y-5">
+        <Badge variant="secondary" className="w-fit">
           For indie founders launching a new digital product
         </Badge>
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
@@ -52,7 +52,7 @@ export default async function HubLanding() {
         <p className="text-lg leading-relaxed text-muted-foreground">
           {t.appTagline}
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
+        <div className="flex flex-wrap items-center gap-2">
           <Button asChild>
             <Link href="/start-here">
               Start here

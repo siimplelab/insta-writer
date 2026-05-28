@@ -25,7 +25,7 @@ export default async function GuidePage({ params }: { params: Params }) {
   const tldr = GUIDE_TLDR[slug];
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10 md:py-12 space-y-8">
+    <div className="mx-auto max-w-5xl px-6 py-10 md:py-12 space-y-8">
       <Button variant="ghost" size="sm" className="-ml-3" asChild>
         <Link href="/guides"><ArrowLeft className="h-4 w-4" /> {locale === "ko" ? "가이드 목록" : "All guides"}</Link>
       </Button>
@@ -59,7 +59,7 @@ export default async function GuidePage({ params }: { params: Params }) {
 
       <Separator />
 
-      <article className="prose-base max-w-none">{guide.body()}</article>
+      <article className="prose-base max-w-3xl">{guide.body()}</article>
 
       <Separator />
 
