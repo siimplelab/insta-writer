@@ -1,121 +1,71 @@
-# Instagram Writer
+# Marketing Atlas
 
-**AI-assisted multi-platform scheduler with a browser-extension capture flow.**
-Posts to your own Instagram (Creator / Business) and Twitter/X accounts via
-official APIs. Local-first — your data and credentials live on your machine.
+**A hub for indie founders: how to market a new digital product, with AI skills you can drop into Claude Code or Codex.**
 
-## What it does — and what it doesn't
+Built as a Next.js 16 web hub AND a Claude Code workspace. Information lives in the web app (guides, skills, resources). AI skills + specialist subagents live in `.claude/` for direct use from any Claude Code session opened against this repo.
 
-This is intentionally a **publish-only** tool. It does **not** receive webhooks,
-auto-DM, or auto-comment. That scope cut keeps the deployment story honest:
-your laptop can be offline most of the day and the app will catch up when you
-turn it on.
+## What's inside
 
-### ✅ What you get
+**Information (web hub):**
+- `/start-here` — glossary (CAC, LTV, AARRR, ASO, PMF, ICP, NSM, MoM, churn, activation, CTR, MVP) + 5-step roadmap
+- `/guides` — 14 opinionated guides incl. the flagship "promote a new mobile app" playbook, video marketing, marketing-on-autopilot, design automation
+- `/skills` — 10 AI skills, downloadable as Markdown
+- `/resources` — curated books / newsletters / communities / SaaS
 
-- **Schedule** photo, carousel, reel, and story posts to IG
-- **Schedule** tweets with images to X
-- **AI caption** generation from an image (Vercel AI Gateway)
-- **Browser extension** to capture page content into draft posts on any site
-- **Calendar** view with status badges, delete for queued/draft/failed items
-- **Catch-up + stale protection** — when your cron runs after being offline,
-  it publishes anything queued within the last 24h and marks older items
-  failed (so a Tuesday sale post doesn't go out on Thursday)
-- **Marketing guides** built-in covering content strategy, hashtags, Reels,
-  cadence, X, analytics
-- **English + Korean** UI
+**Working tools:**
+- `/tools/scheduler` — IG + X multi-platform scheduler (official APIs, local-first)
+- `/tools/visual-builder` — programmatic social-image generator (Next.js `next/og`)
+- `/tools/page-capture` — Chrome extension for capturing webpage content into draft posts
 
-### ❌ What you don't get (and why)
-
-- **DM auto-replies / lead capture** — would require an always-on, publicly
-  reachable webhook server. See `/guides/dm-funnels` for the honest landscape
-  (ManyChat is the right tool).
-- **Personal IG account support** — Meta's official API is hard-gated to
-  Creator/Business accounts. Switch (free, invisible, reversible) — see
-  `/guides/switch-to-creator`.
-- **Comment automation / follower automation** — these violate Instagram's
-  Terms of Use. We don't build them.
-- **Twitter DM features** — Twitter's webhook tier (Account Activity API) is
-  enterprise-priced.
-- **Video tweets** — image-only for the MVP.
+**Claude Code workspace:**
+- `.claude/skills/<slug>/SKILL.md` — 10 marketing skills loaded into Claude Code automatically
+- `.claude/agents/<name>.md` — 6 specialist marketing subagents (gtm-strategist, copywriter, aso-researcher, content-batcher, video-director, design-director)
 
 ## Stack
 
-Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Vercel Blob · Vercel
-AI Gateway · Tailwind.
-
-Storage is local SQLite at `data/app.db`. The database and schema are created
-and migrated automatically on first import.
+Next.js 16 (App Router) · Drizzle ORM · better-sqlite3 · Tailwind · Vercel AI Gateway · `next/og` for image generation. Local-first SQLite at `data/app.db`.
 
 ## Setup
 
-### 1. Install
-
 ```bash
 npm install
+npm run dev      # http://localhost:3000
 ```
 
-### 2. Get a public URL (only for OAuth — not for live events)
+SQLite auto-creates and auto-migrates on first run.
 
-The Meta and Twitter OAuth callbacks need a public HTTPS URL. Easiest options:
+For the scheduler to actually post, see `.env.example` and connect a Meta and/or X developer app. For the AI features in skills, set `AI_GATEWAY_API_KEY`. For the Chrome extension, generate an `APP_API_KEY`.
 
-- **ngrok** free tier with a static domain ($8/mo, recommended)
-- **Cloudflare Tunnel** free
-- Or just use `http://localhost:3000` if your OAuth provider allows it (Twitter
-  allows http://localhost; Meta requires https)
+## Use as a Claude Code workspace
 
-You only need this **while connecting accounts**. After that, you can run
-purely on localhost.
-
-### 3. Meta app
-
-1. Create an app at https://developers.facebook.com
-2. Add the **Instagram** product (skip Webhooks — we don't use them)
-3. Connect your IG Creator/Business account to a Facebook Page you own
-4. Add scopes: `instagram_basic`, `instagram_content_publish`,
-   `instagram_manage_insights`, `pages_show_list`, `pages_read_engagement`
-5. Set OAuth redirect URI to your public URL + `/api/meta/oauth/callback`
-6. **Dev mode is fine** for using this on your own accounts — App Review is
-   only needed if you want to share the app with other users (you don't)
-
-### 4. Twitter / X app
-
-1. https://developer.x.com → new project (Free tier, 1,500 posts/month)
-2. User authentication settings: type **OAuth 2.0**, permissions **Read and
-   write**, callback URL = `your-url/api/twitter/oauth/callback`
-
-### 5. Configure env
-
-Copy `.env.example` → `.env.local` and fill it in.
-
-### 6. Run
+Open this repo in Claude Code. The skills and subagents are auto-discovered:
 
 ```bash
-npm run dev          # http://localhost:3000
+# In a Claude Code session inside this repo:
+/agents              # lists the 6 marketing subagents
+# Talk to one:
+"Hand off to gtm-strategist: I'm launching a fitness app for runners. What should I do first?"
+
+# Or invoke a skill directly:
+/skill icp-writer
 ```
 
-### 7. Set up a local cron (if you actually want scheduling)
+## Use with Codex / other Anthropic SDK clients
 
-The publish cron is a regular HTTP endpoint. From your laptop's crontab:
+The skills under `public/skills/*.md` are platform-agnostic Markdown with YAML frontmatter. Copy them into your client's prompt directory. The `.claude/skills/<slug>/SKILL.md` form is specific to Claude Code.
 
-```bash
-* * * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/publish-due >/dev/null
-```
+## What this project deliberately doesn't do
 
-If your laptop is closed, posts wait in the queue. When you open it, anything
-scheduled within the last 24h publishes; older items are marked failed
-(adjustable via `STALE_HOURS` in the cron handler).
-
-## Chrome extension
-
-See [extension/README.md](./extension/README.md). The extension captures the
-current tab's images and text into draft posts via the v1 API.
+- Auto-DM / auto-comment / auto-follow on social platforms (violates ToS)
+- Webhook-driven live event handling (would need always-on hosting; cut for simplicity)
+- Personal IG account automation (Meta API requires Creator/Business — see `/guides/switch-to-creator`)
+- Video tweet uploads (chunked upload pipeline, out of scope for MVP)
 
 ## Useful commands
 
 ```bash
 npm run dev          # start Next.js
 npm run build        # production build
-npm run db:generate  # after schema edits
-npm run db:studio    # open Drizzle Studio against your local DB
+npm run db:generate  # generate a new migration after schema edits
+npm run db:studio    # Drizzle Studio against your local DB
 ```

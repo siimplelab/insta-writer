@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-  const dest = new URL("/twitter?connected=" + encodeURIComponent(profile.username), url.origin);
+  const dest = new URL("/tools/scheduler/twitter?connected=" + encodeURIComponent(profile.username), url.origin);
   const res = NextResponse.redirect(dest);
   res.cookies.delete("tw_oauth_state");
   res.cookies.delete("tw_oauth_verifier");

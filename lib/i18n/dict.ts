@@ -4,9 +4,50 @@ export const DEFAULT_LOCALE: Locale = "en";
 
 export const dict = {
   en: {
-    appTitle: "Instagram Writer",
-    tagline:
-      "An AI-assisted multi-platform scheduler with a browser-extension capture flow. Posts to your own Instagram and Twitter/X accounts via official APIs.",
+    appTitle: "Marketing Atlas",
+    appTagline:
+      "A hub for indie founders: how to market a new digital product, with AI skills you can drop into Claude Code or Codex.",
+
+    // Top-level hub navigation
+    hub: {
+      startHere: "Start here",
+      startHereDesc: "Total beginner? Glossary + 5-step roadmap.",
+      guides: "Guides",
+      guidesDesc: "Long-form walkthroughs of the marketing playbook.",
+      skills: "AI Skills",
+      skillsDesc: "Drop-in prompts for Claude Code & Codex.",
+      tools: "Tools",
+      toolsDesc: "Working tools you can run today.",
+      resources: "Resources",
+      resourcesDesc: "Curated books, communities, SaaS.",
+      settings: "Settings",
+      settingsDesc: "Language + extension API key.",
+    },
+
+    // Generic
+    toolsBackToIndex: "All tools",
+    skillsBackToIndex: "All skills",
+    guidesBackToIndex: "All guides",
+    readingMinutes: "min read",
+    copy: "Copy",
+    copied: "Copied",
+    download: "Download .md",
+
+    // Scheduler tool (was: the whole app)
+    scheduler: {
+      title: "Multi-platform Scheduler",
+      tagline:
+        "Schedule posts to your own Instagram (Creator/Business) and X accounts via official APIs. AI-assisted captions. Browser-extension capture.",
+      indexBlurb:
+        "Working scheduler for IG and X. Local-first, runs from your machine.",
+    },
+    pageCapture: {
+      title: "Page Capture (Chrome Extension)",
+      tagline:
+        "Capture images and text from any webpage into a draft post in the Scheduler.",
+    },
+
+    // Existing scheduler strings (legacy keys kept so moved pages still work)
     connectedAccounts: "Connected accounts",
     connectButton: "Connect Instagram",
     onboardingHint:
@@ -36,7 +77,7 @@ export const dict = {
     },
     compose: {
       title: "Compose",
-      connectFirst: "Connect an Instagram account first from the home page.",
+      connectFirst: "Connect an Instagram account first from the scheduler home.",
       account: "Account",
       kind: "Kind",
       photo: "Photo",
@@ -83,9 +124,44 @@ export const dict = {
     dbError: "Could not reach the database. Restart the dev server to auto-create it.",
   },
   ko: {
-    appTitle: "인스타그램 라이터",
-    tagline:
-      "AI 기반 멀티 플랫폼 게시 예약 도구입니다. 브라우저 확장으로 웹페이지에서 콘텐츠를 캡처해 자신의 인스타그램과 X(트위터) 계정에 공식 API로 게시합니다.",
+    appTitle: "마케팅 아틀라스",
+    appTagline:
+      "1인 창업자를 위한 허브: 디지털 제품을 마케팅하는 방법과, Claude Code · Codex에 바로 붙여 쓰는 AI 스킬.",
+
+    hub: {
+      startHere: "시작하기",
+      startHereDesc: "처음이세요? 용어집과 5단계 로드맵.",
+      guides: "가이드",
+      guidesDesc: "마케팅 플레이북 장문 가이드.",
+      skills: "AI 스킬",
+      skillsDesc: "Claude Code · Codex 용 즉시 사용 가능한 프롬프트.",
+      tools: "도구",
+      toolsDesc: "오늘 바로 쓸 수 있는 도구.",
+      resources: "자료",
+      resourcesDesc: "엄선된 책, 커뮤니티, 서비스.",
+      settings: "설정",
+      settingsDesc: "언어 및 확장 프로그램 API 키.",
+    },
+
+    toolsBackToIndex: "도구 목록",
+    skillsBackToIndex: "스킬 목록",
+    guidesBackToIndex: "가이드 목록",
+    readingMinutes: "분",
+    copy: "복사",
+    copied: "복사됨",
+    download: ".md 다운로드",
+
+    scheduler: {
+      title: "멀티 플랫폼 스케줄러",
+      tagline:
+        "공식 API로 내 인스타그램(크리에이터·비즈니스)과 X 계정에 게시물을 예약합니다. AI 캡션 보조. 브라우저 확장으로 콘텐츠 캡처.",
+      indexBlurb: "IG와 X를 위한 동작하는 스케줄러. 로컬 우선, 내 기기에서 실행됩니다.",
+    },
+    pageCapture: {
+      title: "페이지 캡처 (크롬 확장)",
+      tagline: "웹페이지의 이미지와 텍스트를 스케줄러의 초안 게시물로 캡처합니다.",
+    },
+
     connectedAccounts: "연결된 계정",
     connectButton: "Instagram 연결",
     onboardingHint:
@@ -115,7 +191,7 @@ export const dict = {
     },
     compose: {
       title: "게시물 작성",
-      connectFirst: "먼저 홈에서 인스타그램 계정을 연결하세요.",
+      connectFirst: "먼저 스케줄러에서 인스타그램 계정을 연결하세요.",
       account: "계정",
       kind: "유형",
       photo: "사진",
@@ -153,7 +229,7 @@ export const dict = {
       saved: "저장되었습니다 — 새로고침하면 적용됩니다.",
       extensionTitle: "크롬 확장 프로그램",
       extensionDesc:
-        "동반 크롬 확장 프로그램을 설치하면 웹페이지에서 콘텐츠를 가져와 인스타그램 초안으로 저장할 수 있습니다. API 키로 인증합니다.",
+        "동반 크롬 확장 프로그램을 설치하면 웹페이지에서 콘텐츠를 가져와 초안 게시물로 저장할 수 있습니다. API 키로 인증합니다.",
       apiKeyConfigured: "API 키가 설정되어 있습니다.",
       apiKeyMissing:
         "APP_API_KEY 환경 변수가 설정되어 있지 않습니다. `openssl rand -hex 32`로 생성한 뒤 .env.local에 추가하세요.",

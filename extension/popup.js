@@ -1,4 +1,4 @@
-// IG Writer popup
+// Marketing Atlas — page-capture popup
 // Talks to the deployed Next.js app via /api/v1/* endpoints.
 
 const $ = (id) => document.getElementById(id);

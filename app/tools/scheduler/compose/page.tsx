@@ -27,8 +27,8 @@ export default async function ComposePage() {
       {!error && accounts.length === 0 ? (
         <div className="space-y-2 text-sm">
           <p className="text-neutral-500">{t.compose.connectFirst}</p>
-          <a href="/" className="inline-block underline">
-            ← Go to home
+          <a href="/tools/scheduler" className="inline-block underline">
+            ← Go to scheduler
           </a>
           <span className="mx-2 text-neutral-400">·</span>
           <a href="/guides/switch-to-creator" className="inline-block underline">

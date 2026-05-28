@@ -1,0 +1,17 @@
+{
+  "_comment": "Example MCP server config for Claude Code. Drop into ~/.claude/mcp_servers.json (or merge with existing). Exposes Marketing Atlas /api/v1/* endpoints to Claude so you can say 'create a draft tweet for Friday' and Claude handles the API call.",
+  "mcpServers": {
+    "marketing-atlas": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch",
+        "--base-url",
+        "http://localhost:3000/api/v1",
+        "--header",
+        "Authorization: Bearer YOUR_APP_API_KEY_HERE"
+      ],
+      "_alternative_comment": "If you'd rather write a small custom MCP server, see the marketing-on-autopilot guide for a Node.js template. The server should expose tools for: list_accounts, create_draft, generate_caption, list_scheduled_posts."
+    }
+  }
+}

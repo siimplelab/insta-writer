@@ -52,13 +52,13 @@ export default async function TwitterHome() {
 
       <nav className="grid grid-cols-2 gap-3 md:grid-cols-3">
         <Link
-          href="/twitter/compose"
+          href="/tools/scheduler/twitter/compose"
           className="rounded border p-4 hover:bg-neutral-50 dark:hover:bg-neutral-900"
         >
           Compose tweet
         </Link>
         <Link
-          href="/"
+          href="/tools/scheduler"
           className="rounded border p-4 hover:bg-neutral-50 dark:hover:bg-neutral-900"
         >
           ← Back to IG

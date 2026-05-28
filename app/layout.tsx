@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Instagram Writer",
-  description: "Schedule posts and run DM lead-gen on your own IG Business accounts.",
+  title: "Marketing Atlas",
+  description:
+    "A hub for indie founders: how to market a new digital product, with AI skills you can drop into Claude Code or Codex.",
 };
 
 export default function RootLayout({

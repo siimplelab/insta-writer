@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     linked.push(acct.username);
   }
 
-  const dest = new URL("/?connected=" + encodeURIComponent(linked.join(",")), url.origin);
+  const dest = new URL("/tools/scheduler?connected=" + encodeURIComponent(linked.join(",")), url.origin);
   const res = NextResponse.redirect(dest);
   res.cookies.delete("meta_oauth_state");
   return res;

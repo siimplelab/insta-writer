@@ -1,118 +1,62 @@
 import Link from "next/link";
-import { db, schema } from "@/lib/db/client";
-import { desc } from "drizzle-orm";
-import { safeQuery } from "@/lib/db/safe";
 import { getDict } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+export default async function HubLanding() {
   const t = await getDict();
-  const accountsRes = await safeQuery(
-    () => db.select().from(schema.igAccounts),
-    [] as (typeof schema.igAccounts.$inferSelect)[],
-  );
-  const postsRes = await safeQuery(
-    () =>
-      db
-        .select()
-        .from(schema.posts)
-        .orderBy(desc(schema.posts.scheduledFor))
-        .limit(10),
-    [] as (typeof schema.posts.$inferSelect)[],
-  );
-  const dbError = accountsRes.error ?? postsRes.error;
-  const accounts = accountsRes.data;
-  const upcoming = postsRes.data;
+
+  const primary = [
+    { href: "/start-here", label: t.hub.startHere, desc: t.hub.startHereDesc, accent: "bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-900" },
+    { href: "/guides", label: t.hub.guides, desc: t.hub.guidesDesc, accent: "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-900" },
+    { href: "/skills", label: t.hub.skills, desc: t.hub.skillsDesc, accent: "bg-violet-50 dark:bg-violet-950 border-violet-200 dark:border-violet-900" },
+  ];
+
+  const secondary = [
+    { href: "/tools", label: t.hub.tools, desc: t.hub.toolsDesc },
+    { href: "/resources", label: t.hub.resources, desc: t.hub.resourcesDesc },
+    { href: "/settings", label: t.hub.settings, desc: t.hub.settingsDesc },
+  ];
 
   return (
-    <main className="mx-auto max-w-4xl p-8 space-y-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold">{t.appTitle}</h1>
-        <p className="text-sm text-neutral-500">{t.tagline}</p>
+    <main className="mx-auto max-w-5xl p-8 space-y-10">
+      <header className="space-y-3 pt-8">
+        <h1 className="text-4xl font-bold tracking-tight">{t.appTitle}</h1>
+        <p className="max-w-2xl text-base text-neutral-600 dark:text-neutral-400">
+          {t.appTagline}
+        </p>
       </header>
 
-      {dbError && (
-        <div className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
-          {t.dbError}
-          <pre className="mt-2 text-xs opacity-70">{dbError}</pre>
-        </div>
-      )}
-
-      <section className="space-y-2">
-        <h2 className="font-semibold">{t.connectedAccounts}</h2>
-        {accounts.length === 0 ? (
-          <div className="space-y-3">
+      <section>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {primary.map((p) => (
             <Link
-              href="/api/meta/oauth/start"
-              className="inline-block rounded bg-black px-4 py-2 text-white"
+              key={p.href}
+              href={p.href}
+              className={`rounded-lg border p-5 transition-shadow hover:shadow-md ${p.accent}`}
             >
-              {t.connectButton}
+              <h2 className="text-lg font-semibold">{p.label}</h2>
+              <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                {p.desc}
+              </p>
             </Link>
-            <div className="rounded border border-blue-200 bg-blue-50 p-3 text-sm dark:border-blue-900 dark:bg-blue-950">
-              <p className="text-blue-900 dark:text-blue-200">{t.onboardingHint}</p>
-              <Link
-                href="/guides/switch-to-creator"
-                className="mt-1 inline-block font-medium text-blue-700 hover:underline dark:text-blue-300"
-              >
-                {t.onboardingCta}
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <ul className="text-sm">
-            {accounts.map((a) => (
-              <li key={a.id}>
-                @{a.handle} — {t.tokenExpires} {a.tokenExpiresAt.toISOString().slice(0, 10)}
-              </li>
-            ))}
-          </ul>
-        )}
+          ))}
+        </div>
       </section>
 
-      <nav className="grid grid-cols-2 gap-3 md:grid-cols-3">
-        {[
-          [t.nav.compose, "/compose"],
-          [t.nav.calendar, "/calendar"],
-          [t.nav.analytics, "/analytics"],
-          ["Twitter / X →", "/twitter"],
-          [t.guidesNav, "/guides"],
-          [t.nav.settings, "/settings"],
-        ].map(([label, href]) => (
-          <Link
-            key={href}
-            href={href}
-            className="rounded border border-neutral-200 p-4 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900"
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
-
-      <section className="space-y-2">
-        <h2 className="font-semibold">{t.recentPosts}</h2>
-        {upcoming.length === 0 ? (
-          <p className="text-sm text-neutral-500">{t.noPosts}</p>
-        ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-neutral-500">
-                <th>{t.cols.when}</th>
-                <th>{t.cols.kind}</th>
-                <th>{t.cols.status}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {upcoming.map((p) => (
-                <tr key={p.id} className="border-t border-neutral-200 dark:border-neutral-800">
-                  <td>{p.scheduledFor.toISOString().slice(0, 16).replace("T", " ")}</td>
-                  <td>{p.kind}</td>
-                  <td>{p.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+      <section>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {secondary.map((s) => (
+            <Link
+              key={s.href}
+              href={s.href}
+              className="rounded border border-neutral-200 p-4 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900"
+            >
+              <div className="font-medium">{s.label}</div>
+              <div className="mt-0.5 text-xs text-neutral-500">{s.desc}</div>
+            </Link>
+          ))}
+        </div>
       </section>
     </main>
   );

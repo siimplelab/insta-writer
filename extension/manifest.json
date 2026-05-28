@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "IG Writer Companion",
-  "version": "0.1.0",
-  "description": "Capture images and text from any webpage into Instagram draft posts in your IG Writer app.",
+  "name": "Marketing Atlas — Page Capture",
+  "version": "0.2.0",
+  "description": "Capture images and text from any webpage into draft posts in your Marketing Atlas scheduler.",
   "permissions": ["activeTab", "scripting", "storage", "contextMenus", "notifications"],
   "host_permissions": ["<all_urls>"],
   "action": {
-    "default_title": "IG Writer",
+    "default_title": "Marketing Atlas",
     "default_popup": "popup.html"
   },
   "options_ui": {

@@ -24,7 +24,7 @@ export default async function TweetComposePage() {
       {!error && accounts.length === 0 ? (
         <p className="text-sm text-neutral-500">
           Connect a Twitter/X account first from the{" "}
-          <a href="/twitter" className="underline">
+          <a href="/tools/scheduler/twitter" className="underline">
             Twitter page
           </a>
           .

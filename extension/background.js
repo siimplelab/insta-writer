@@ -4,12 +4,12 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "ig-writer-draft-image",
-    title: "Save image to IG Writer draft",
+    title: "Save image to Marketing Atlas draft",
     contexts: ["image"],
   });
   chrome.contextMenus.create({
     id: "ig-writer-draft-selection",
-    title: "Save selection to IG Writer caption",
+    title: "Save selection to Marketing Atlas caption",
     contexts: ["selection"],
   });
 });
@@ -55,10 +55,10 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
     } else if (info.menuItemId === "ig-writer-draft-selection" && info.selectionText) {
       // Save just text — no media. Requires at least one media per the schema, so we skip until
       // user opens popup. Notify them.
-      await flash("Open IG Writer popup to pick an image for this caption.");
+      await flash("Open Marketing Atlas popup to pick an image for this caption.");
     }
   } catch (e) {
-    await flash("IG Writer error: " + e.message);
+    await flash("Marketing Atlas error: " + e.message);
   }
 });
 
@@ -73,7 +73,7 @@ async function flash(message) {
     chrome.notifications.create({
       type: "basic",
       iconUrl: TINY_PNG,
-      title: "IG Writer",
+      title: "Marketing Atlas",
       message,
     });
   } catch {
