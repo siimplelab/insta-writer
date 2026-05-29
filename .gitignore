@@ -45,3 +45,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Validation kit — filled-in templates stay local by default
+/validation/app-brief.md
+/validation/findings.md
+/validation/out-*.md
