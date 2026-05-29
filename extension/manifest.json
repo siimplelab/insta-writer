@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "miinimal — Page Capture",
+  "name": "siimply — Page Capture",
   "version": "0.2.0",
-  "description": "Capture images and text from any webpage into draft posts in your miinimal scheduler.",
+  "description": "Capture images and text from any webpage into draft posts in your siimply scheduler.",
   "permissions": ["activeTab", "scripting", "storage", "contextMenus", "notifications"],
   "host_permissions": ["<all_urls>"],
   "action": {
-    "default_title": "miinimal",
+    "default_title": "siimply",
     "default_popup": "popup.html"
   },
   "options_ui": {

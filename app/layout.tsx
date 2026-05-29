@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "miinimal — minimal marketing for indie founders",
+  title: "siimply — simply effective marketing for indie founders",
   description:
-    "A minimal marketing toolkit. AI skills you drop into Claude Code or Codex, focused guides, and one-tool-per-job software. Marketing on autopilot, video, ASO, launches.",
+    "A simply-effective marketing toolkit. AI skills you drop into Claude Code or Codex, focused guides, and one-tool-per-job software. Marketing on autopilot, video, ASO, launches.",
 };
 
 export default function RootLayout({

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   const size = SIZES[template];
   const title = clamp(url.searchParams.get("title") ?? "Title goes here", 120);
   const subtitle = clamp(url.searchParams.get("subtitle") ?? "", 200);
-  const brand = clamp(url.searchParams.get("brand") ?? "miinimal", 40);
+  const brand = clamp(url.searchParams.get("brand") ?? "siimply", 40);
   const accent = url.searchParams.get("accent") ?? "#0ea5e9";
   const bg = url.searchParams.get("bg") ?? "#0a0a0a";
 

@@ -1,6 +1,6 @@
-# miinimal — Chrome Extension
+# siimply — Chrome Extension
 
-Companion extension for the miinimal app. Captures images and text from any
+Companion extension for the siimply app. Captures images and text from any
 webpage into draft Instagram / X posts in the scheduler, with AI-generated
 captions.
 
@@ -12,7 +12,7 @@ captions.
   Vercel AI Gateway) with the page context as input
 - POSTs to `/api/v1/drafts` on your app, which downloads the images into
   Vercel Blob and creates a `draft` or `queued` post
-- Right-click an image → "Save image to miinimal draft" for one-click capture
+- Right-click an image → "Save image to siimply draft" for one-click capture
 
 Auth is a single bearer API key (`APP_API_KEY`) you set on the server and
 paste into the extension's Options page.

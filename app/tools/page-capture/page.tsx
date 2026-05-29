@@ -45,7 +45,7 @@ export default async function PageCapture() {
             <li>Open <code className="rounded bg-muted px-1">chrome://extensions</code></li>
             <li>Enable Developer mode (top right)</li>
             <li>Click <strong>Load unpacked</strong> → pick the <code className="rounded bg-muted px-1">extension/</code> folder</li>
-            <li>Click the puzzle icon → miinimal → ⚙ → paste your App URL + API key</li>
+            <li>Click the puzzle icon → siimply → ⚙ → paste your App URL + API key</li>
             <li>Click <strong>Test connection</strong> — should report the number of connected accounts</li>
           </ol>
         </CardContent>
