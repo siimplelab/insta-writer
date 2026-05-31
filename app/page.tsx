@@ -4,11 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getDict } from "@/lib/i18n/server";
+import { GUIDES } from "@/lib/guides/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function HubLanding() {
   const t = await getDict();
+  const h = t.pages.home;
 
   const primary = [
     {
@@ -16,14 +18,14 @@ export default async function HubLanding() {
       label: t.hub.startHere,
       desc: t.hub.startHereDesc,
       icon: Compass,
-      tag: "Beginner",
+      tag: h.beginnerTag,
     },
     {
       href: "/guides",
       label: t.hub.guides,
       desc: t.hub.guidesDesc,
       icon: BookOpen,
-      tag: "14 guides",
+      tag: `${GUIDES.length} ${t.pages.guidesIndex.badgeSuffix}`,
     },
     {
       href: "/skills",
@@ -44,7 +46,7 @@ export default async function HubLanding() {
     <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
       <section className="max-w-3xl space-y-5">
         <Badge variant="secondary" className="w-fit">
-          For indie founders launching a new digital product
+          {h.badge}
         </Badge>
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
           {t.appTitle}
@@ -55,12 +57,12 @@ export default async function HubLanding() {
         <div className="flex flex-wrap items-center gap-2">
           <Button asChild>
             <Link href="/start-here">
-              Start here
+              {h.ctaStart}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/guides/promote-mobile-app">Read the launch playbook</Link>
+            <Link href="/guides/promote-mobile-app">{h.ctaPlaybook}</Link>
           </Button>
         </div>
       </section>
@@ -85,7 +87,7 @@ export default async function HubLanding() {
                     <CardDescription>{p.desc}</CardDescription>
                   </CardHeader>
                   <CardContent className="text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
-                    Open
+                    {t.common.open}
                     <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
                   </CardContent>
                 </Card>
@@ -118,16 +120,14 @@ export default async function HubLanding() {
       <section className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="md:col-span-2">
           <CardHeader>
-            <Badge variant="info" className="w-fit">New flagship guide</Badge>
-            <CardTitle>How to promote a new mobile app</CardTitle>
-            <CardDescription>
-              5 phases from idea to first 1,000 users. No hype, no &quot;growth hacks&quot; — just the steps that actually compound.
-            </CardDescription>
+            <Badge variant="info" className="w-fit">{h.flagshipBadge}</Badge>
+            <CardTitle>{h.flagshipTitle}</CardTitle>
+            <CardDescription>{h.flagshipDesc}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button variant="link" className="-ml-4" asChild>
               <Link href="/guides/promote-mobile-app">
-                Read the playbook
+                {h.flagshipCta}
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -135,16 +135,14 @@ export default async function HubLanding() {
         </Card>
         <Card>
           <CardHeader>
-            <Badge variant="success" className="w-fit">Working tool</Badge>
-            <CardTitle>Visual Builder</CardTitle>
-            <CardDescription>
-              Code-driven social-image generator. No design app needed.
-            </CardDescription>
+            <Badge variant="success" className="w-fit">{h.toolBadge}</Badge>
+            <CardTitle>{h.toolTitle}</CardTitle>
+            <CardDescription>{h.toolDesc}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button variant="link" className="-ml-4" asChild>
               <Link href="/tools/visual-builder">
-                Open
+                {t.common.open}
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>

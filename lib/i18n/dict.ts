@@ -122,6 +122,131 @@ export const dict = {
       extensionInstall: "Install the extension",
     },
     dbError: "Could not reach the database. Restart the dev server to auto-create it.",
+
+    common: {
+      home: "Home",
+      open: "Open",
+      minRead: "min read",
+    },
+
+    pages: {
+      home: {
+        badge: "For indie founders launching a new digital product",
+        beginnerTag: "Beginner",
+        ctaStart: "Start here",
+        ctaPlaybook: "Read the launch playbook",
+        flagshipBadge: "New flagship guide",
+        flagshipTitle: "How to promote a new mobile app",
+        flagshipDesc:
+          "5 phases from idea to first 1,000 users. No hype, no “growth hacks” — just the steps that actually compound.",
+        flagshipCta: "Read the playbook",
+        toolBadge: "Working tool",
+        toolTitle: "Visual Builder",
+        toolDesc: "Code-driven social-image generator. No design app needed.",
+      },
+      startHere: {
+        badge: "Orientation · 10 min",
+        title: "Start here",
+        intro:
+          "You don't need to know marketing to ship a product that gets used. You need a vocabulary, a roadmap, and the discipline to send things. This page is the 10-minute version.",
+        tldrTitle: "TL;DR",
+        tldr1: "Learn the 12 terms below — you'll see them everywhere.",
+        tldr2: "Then walk the 5 steps in order. Each one feeds the next.",
+        tldr3:
+          "You will get more from posting consistently for 6 weeks than from reading any one guide for 6 hours.",
+        glossaryTitle: "Glossary — 12 terms to know",
+        glossarySub: "Skim now, refer back later.",
+        roadmapTitle: "5-step roadmap",
+        roadmapSub: "Do these in order. Don't skip — each one feeds the next.",
+        ruleTitle: "One honest rule of thumb",
+        ruleBody:
+          "You will get more from posting consistently for 6 weeks than from reading any one guide for 6 hours. Skim, ship, measure, repeat.",
+      },
+      guidesIndex: {
+        badgeSuffix: "guides",
+        title: "Marketing Guides",
+        intro:
+          "Practical guides for indie founders. What actually works in 2026 — not generic checklists.",
+        flagship: "Flagship",
+      },
+      guideDetail: {
+        badge: "Guide",
+        backAll: "All guides",
+        tldrTitle: "TL;DR — the 30-second version",
+        footer:
+          "Was this useful? Head back to all guides or try one of the AI skills to put it into practice.",
+        footerGuides: "all guides",
+        footerSkills: "AI skills",
+        bodyEnNote: "The full guide below is in English. A Korean translation is coming.",
+      },
+      skillsIndex: {
+        badgeSuffix: "skills",
+        intro:
+          "Drop-in prompts for Claude Code and Codex. Each one is a Markdown file with YAML frontmatter — install instructions on each detail page.",
+        catCopy: "Copy",
+        catCopyDesc: "Run once when you need the output. Fill in the inputs, paste the result.",
+        catCron: "Cron-friendly",
+        catCronDesc:
+          "Designed for a schedule (Claude Code scheduled tasks, Vercel Cron, or your own crontab). Structured output downstream tools can ingest.",
+        catDesign: "Design briefs",
+        catDesignDesc:
+          "Generate precise specs for Figma templates or code-driven visual-builder images.",
+        calloutTitle: "New to Claude Code skills?",
+        calloutBody:
+          "See the Marketing on Autopilot guide — it explains how to install skills, schedule them with cron, and wire them into the scheduler.",
+      },
+      skillDetail: {
+        backAll: "All skills",
+        oneShot: "One-shot",
+        cronFriendly: "Cron-friendly",
+        designBrief: "Design brief",
+        tldrTitle: "What it does, in 10 seconds",
+        inputs: "Inputs you provide",
+        outputs: "What you get back",
+        sourceTitle: "Skill source",
+        installTitle: "Install",
+        missing: "Skill file is missing from public/skills/.",
+      },
+      resources: {
+        badge: "Curated",
+        intro:
+          "Hand-picked. Each entry has a one-line reason it's on this list. No affiliate links, no SEO filler.",
+        tldrTitle: "TL;DR — if you only read 3 things",
+      },
+      tools: {
+        badgeSuffix: "tools",
+        intro:
+          "Working tools you can run today. Each one is local-first and uses official APIs of the platform it touches.",
+        schedulerBadge: "Stateful",
+        visualBadge: "Stateless",
+        extensionBadge: "Chrome extension",
+        catalogBadge: "Catalog",
+        visualTitle: "Visual Builder",
+        visualDesc:
+          "Generate branded social images (OG / Instagram / Story) from templates. No design app required.",
+        imageGenTitle: "AI image generators",
+        imageGenDesc:
+          "Catalog of widely-used image-gen services (Midjourney, ChatGPT, Gemini, Flux, Ideogram, Recraft, and more) with honest one-line assessments.",
+      },
+      imageGen: {
+        badge: "Catalog · 16 services",
+        title: "AI image generators",
+        intro:
+          "Widely-used image-generation services in 2026, with one-line honest assessments. Each entry links out to the service. None of these run locally in this app — for templates with text overlays, use our Visual Builder instead.",
+        pick3Title: "The indie-founder stack — if you only pick 3",
+        avoidTitle: "What to NOT use AI imagery for",
+        briefTitle: "Need to brief these tools systematically?",
+        briefBody:
+          "The social-image-spec skill writes a spec a developer can implement in Vercel OG. The figma-template-brief skill writes a spec for a Figma designer. Use these to drive image production at any scale.",
+        bestForLabel: "Best for",
+      },
+      pageCapture: {
+        badge: "Chrome extension",
+        whatTitle: "What it does",
+        installTitle: "Install",
+        apiKeyTitle: "You'll need an API key",
+      },
+    },
   },
   ko: {
     appTitle: "siimply",
@@ -236,6 +361,127 @@ export const dict = {
       extensionInstall: "확장 프로그램 설치 방법",
     },
     dbError: "데이터베이스에 접근할 수 없습니다. 개발 서버를 재시작하면 자동으로 생성됩니다.",
+
+    common: {
+      home: "홈",
+      open: "열기",
+      minRead: "분 분량",
+    },
+
+    pages: {
+      home: {
+        badge: "새 디지털 제품을 출시하는 1인 창업자를 위해",
+        beginnerTag: "초보자",
+        ctaStart: "시작하기",
+        ctaPlaybook: "출시 플레이북 읽기",
+        flagshipBadge: "대표 가이드",
+        flagshipTitle: "새 모바일 앱 홍보하는 법",
+        flagshipDesc:
+          "아이디어에서 첫 1,000명까지 5단계. 과장도, '그로스 해킹'도 없이 — 실제로 누적되는 단계들만.",
+        flagshipCta: "플레이북 읽기",
+        toolBadge: "실제 도구",
+        toolTitle: "비주얼 빌더",
+        toolDesc: "코드 기반 소셜 이미지 생성기. 디자인 앱이 필요 없습니다.",
+      },
+      startHere: {
+        badge: "오리엔테이션 · 10분",
+        title: "시작하기",
+        intro:
+          "사용되는 제품을 출시하는 데 마케팅 지식이 꼭 필요한 건 아닙니다. 필요한 건 용어, 로드맵, 그리고 꾸준히 내보내는 실행력입니다. 이 페이지는 그 10분 요약본입니다.",
+        tldrTitle: "한눈에 보기",
+        tldr1: "아래 12개 용어를 익히세요 — 어디서나 마주치게 됩니다.",
+        tldr2: "그다음 5단계를 순서대로 밟으세요. 각 단계가 다음 단계로 이어집니다.",
+        tldr3: "가이드 하나를 6시간 읽는 것보다 6주 동안 꾸준히 올리는 것이 더 많은 걸 가져다줍니다.",
+        glossaryTitle: "용어집 — 꼭 알아야 할 12개",
+        glossarySub: "지금은 훑어보고, 나중에 다시 참고하세요.",
+        roadmapTitle: "5단계 로드맵",
+        roadmapSub: "순서대로 진행하세요. 건너뛰지 마세요 — 각 단계가 다음으로 이어집니다.",
+        ruleTitle: "솔직한 경험칙 하나",
+        ruleBody:
+          "가이드 하나를 6시간 읽는 것보다 6주 동안 꾸준히 올리는 것이 더 많은 걸 가져다줍니다. 훑고, 내보내고, 측정하고, 반복하세요.",
+      },
+      guidesIndex: {
+        badgeSuffix: "개 가이드",
+        title: "마케팅 가이드",
+        intro: "1인 창업자를 위한 실전 가이드. 2026년에 실제로 통하는 것 — 일반적인 체크리스트가 아닙니다.",
+        flagship: "대표",
+      },
+      guideDetail: {
+        badge: "가이드",
+        backAll: "가이드 목록",
+        tldrTitle: "한눈에 보기 — 30초 요약",
+        footer: "유용했나요? 가이드 목록으로 돌아가거나, AI 스킬로 바로 실행에 옮겨 보세요.",
+        footerGuides: "가이드 목록",
+        footerSkills: "AI 스킬",
+        bodyEnNote: "아래 본문은 영어로 제공됩니다. 한국어 번역은 곧 추가됩니다.",
+      },
+      skillsIndex: {
+        badgeSuffix: "개 스킬",
+        intro:
+          "Claude Code와 Codex에 바로 붙여 쓰는 프롬프트. 각각 YAML 프런트매터가 있는 Markdown 파일이며, 설치 방법은 상세 페이지에 있습니다.",
+        catCopy: "카피",
+        catCopyDesc: "필요할 때 한 번 실행하세요. 입력을 채우고 결과를 붙여넣습니다.",
+        catCron: "크론 친화",
+        catCronDesc:
+          "스케줄 실행용 (Claude Code 예약 작업, Vercel Cron, 또는 직접 crontab). 하위 도구가 바로 받아 쓸 수 있는 구조화된 출력.",
+        catDesign: "디자인 브리프",
+        catDesignDesc: "Figma 템플릿이나 코드 기반 비주얼 빌더 이미지를 위한 정밀 명세를 생성합니다.",
+        calloutTitle: "Claude Code 스킬이 처음이신가요?",
+        calloutBody:
+          "'마케팅 자동조종' 가이드를 보세요 — 스킬 설치, 크론 예약, 스케줄러 연동 방법을 설명합니다.",
+      },
+      skillDetail: {
+        backAll: "스킬 목록",
+        oneShot: "단발 실행",
+        cronFriendly: "크론 친화",
+        designBrief: "디자인 브리프",
+        tldrTitle: "10초 요약: 이게 하는 일",
+        inputs: "입력값",
+        outputs: "결과물",
+        sourceTitle: "스킬 소스",
+        installTitle: "설치",
+        missing: "public/skills/ 에 스킬 파일이 없습니다.",
+      },
+      resources: {
+        badge: "엄선",
+        intro:
+          "직접 골랐습니다. 각 항목에는 이 목록에 있는 이유가 한 줄로 적혀 있습니다. 제휴 링크도, SEO 채우기 글도 없습니다.",
+        tldrTitle: "한눈에 보기 — 딱 3개만 본다면",
+      },
+      tools: {
+        badgeSuffix: "개 도구",
+        intro:
+          "오늘 바로 쓸 수 있는 도구들. 모두 로컬 우선이며 각 플랫폼의 공식 API를 사용합니다.",
+        schedulerBadge: "상태 저장",
+        visualBadge: "상태 없음",
+        extensionBadge: "크롬 확장",
+        catalogBadge: "카탈로그",
+        visualTitle: "비주얼 빌더",
+        visualDesc:
+          "템플릿에서 브랜드 소셜 이미지(OG / 인스타그램 / 스토리)를 생성합니다. 디자인 앱이 필요 없습니다.",
+        imageGenTitle: "AI 이미지 생성기",
+        imageGenDesc:
+          "널리 쓰이는 이미지 생성 서비스(Midjourney, ChatGPT, Gemini, Flux, Ideogram, Recraft 등) 카탈로그. 솔직한 한 줄 평가와 함께.",
+      },
+      imageGen: {
+        badge: "카탈로그 · 16개 서비스",
+        title: "AI 이미지 생성기",
+        intro:
+          "2026년 널리 쓰이는 이미지 생성 서비스를 솔직한 한 줄 평가와 함께 정리했습니다. 각 항목은 해당 서비스로 연결됩니다. 이 중 어느 것도 이 앱 안에서 실행되지 않습니다 — 텍스트가 들어가는 템플릿은 비주얼 빌더를 쓰세요.",
+        pick3Title: "1인 창업자 스택 — 딱 3개만 고른다면",
+        avoidTitle: "AI 이미지를 쓰지 말아야 할 곳",
+        briefTitle: "이 도구들을 체계적으로 브리핑하고 싶다면?",
+        briefBody:
+          "social-image-spec 스킬은 개발자가 Vercel OG로 구현할 수 있는 명세를 작성합니다. figma-template-brief 스킬은 Figma 디자이너용 명세를 작성합니다. 어떤 규모에서든 이미지 제작을 돌리는 데 쓰세요.",
+        bestForLabel: "적합한 용도",
+      },
+      pageCapture: {
+        badge: "크롬 확장",
+        whatTitle: "하는 일",
+        installTitle: "설치",
+        apiKeyTitle: "API 키가 필요합니다",
+      },
+    },
   },
 };
 
