@@ -4,7 +4,7 @@
 This version (16) has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# siimply — Claude Code workspace
+# siimply marketing — Claude Code workspace
 
 This repository is a **minimal marketing toolkit for indie founders** built on Next.js 16. When you open it in Claude Code, you get:
 

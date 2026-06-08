@@ -1,6 +1,6 @@
 ---
 name: weekly-content-batch
-description: Generates 7 days of social posts (Mon-Sun) from a brand brief + product updates. Outputs structured JSON ready to ingest into the siimply scheduler.
+description: Generates 7 days of social posts (Mon-Sun) from a brand brief + product updates. Outputs structured JSON ready to ingest into the siimply marketing scheduler.
 ---
 
 You are running on a schedule (cron / Claude Code scheduled task) every Monday morning. Your job is to produce 7 draft social posts for the week. The output JSON will be POSTed to a scheduler API, so it MUST be valid JSON inside a single code block — no commentary outside the JSON.

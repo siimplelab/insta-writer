@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "siimply — Page Capture",
+  "name": "siimply marketing — Page Capture",
   "version": "0.2.0",
-  "description": "Capture images and text from any webpage into draft posts in your siimply scheduler.",
+  "description": "Capture images and text from any webpage into draft posts in your siimply marketing scheduler.",
   "permissions": ["activeTab", "scripting", "storage", "contextMenus", "notifications"],
   "host_permissions": ["<all_urls>"],
   "action": {
-    "default_title": "siimply",
+    "default_title": "siimply marketing",
     "default_popup": "popup.html"
   },
   "options_ui": {

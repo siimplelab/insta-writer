@@ -4,12 +4,12 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "siimply-draft-image",
-    title: "Save image to siimply draft",
+    title: "Save image to siimply marketing draft",
     contexts: ["image"],
   });
   chrome.contextMenus.create({
     id: "siimply-draft-selection",
-    title: "Save selection to siimply caption",
+    title: "Save selection to siimply marketing caption",
     contexts: ["selection"],
   });
 });
@@ -55,10 +55,10 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
     } else if (info.menuItemId === "siimply-draft-selection" && info.selectionText) {
       // Save just text — no media. Requires at least one media per the schema, so we skip until
       // user opens popup. Notify them.
-      await flash("Open siimply popup to pick an image for this caption.");
+      await flash("Open siimply marketing popup to pick an image for this caption.");
     }
   } catch (e) {
-    await flash("siimply error: " + e.message);
+    await flash("siimply marketing error: " + e.message);
   }
 });
 
@@ -73,7 +73,7 @@ async function flash(message) {
     chrome.notifications.create({
       type: "basic",
       iconUrl: TINY_PNG,
-      title: "siimply",
+      title: "siimply marketing",
       message,
     });
   } catch {

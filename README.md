@@ -1,4 +1,4 @@
-# siimply
+# siimply marketing
 
 **A minimal marketing toolkit for indie founders.** Just what works — AI skills you drop into Claude Code or Codex, focused guides, and one-tool-per-job working software.
 

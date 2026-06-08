@@ -4,7 +4,7 @@ export const DEFAULT_LOCALE: Locale = "en";
 
 export const dict = {
   en: {
-    appTitle: "siimply",
+    appTitle: "siimply marketing",
     appTagline:
       "Simply-effective marketing for indie founders. Just what works — AI skills, focused guides, and one-tool-per-job software you can drop into Claude Code or Codex.",
 
@@ -249,7 +249,7 @@ export const dict = {
     },
   },
   ko: {
-    appTitle: "siimply",
+    appTitle: "siimply marketing",
     appTagline:
       "1인 창업자를 위한 심플하고 효과적인 마케팅. 꼭 필요한 것만 — AI 스킬, 핵심 가이드, 그리고 Claude Code · Codex에 바로 붙여 쓰는 한 가지 일에 충실한 도구들.",
 

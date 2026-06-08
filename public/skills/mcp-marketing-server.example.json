@@ -1,5 +1,5 @@
 {
-  "_comment": "Example MCP server config for Claude Code. Drop into ~/.claude/mcp_servers.json (or merge with existing). Exposes siimply /api/v1/* endpoints to Claude so you can say 'create a draft tweet for Friday' and Claude handles the API call.",
+  "_comment": "Example MCP server config for Claude Code. Drop into ~/.claude/mcp_servers.json (or merge with existing). Exposes siimply marketing /api/v1/* endpoints to Claude so you can say 'create a draft tweet for Friday' and Claude handles the API call.",
   "mcpServers": {
     "siimply": {
       "command": "npx",
